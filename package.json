@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/sahilbanait/portfolio-design#readme",
   "dependencies": {
-    "lite-server": "^2.6.1"
+    "lite-server": "^2.6.1",
+    "mdb-ui-kit": "^3.10.2"
   }
 }

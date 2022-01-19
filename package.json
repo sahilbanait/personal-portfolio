@@ -1,0 +1,24 @@
+{
+  "name": "portfolio-design",
+  "version": "1.0.0",
+  "description": "\"Portfolio Design\"",
+  "main": "index.html",
+  "scripts": {
+    "run": "lite-server lite",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lite": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahilbanait/portfolio-design.git"
+  },
+  "author": "Sahil Kumae",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sahilbanait/portfolio-design/issues"
+  },
+  "homepage": "https://github.com/sahilbanait/portfolio-design#readme",
+  "dependencies": {
+    "lite-server": "^2.6.1"
+  }
+}

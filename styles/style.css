@@ -2,9 +2,10 @@
     font-family: "JetBrains Mono", monospace;
     /* CSS HEX */
     --white: #FFFFFFFF;
+    --black: #000000FF;
     --skobeloff: #006466ff;
-    --midnight-green-eagle-green: #065a60ff;
-    --midnight-green-eagle-green-2: #0b525bff;
+    --midnight-green-eagle-green: rgba(70, 153, 24, 0.86);
+    --midnight-green-eagle-green-2: #127e8c;
     --midnight-green-eagle-green-3: #144552ff;
     --charcoal: #1b3a4bff;
     --prussian-blue: #212f45ff;
@@ -12,8 +13,9 @@
     --dark-purple: #312244ff;
     --russian-violet: #3e1f47ff;
     --russian-violet-2: #4d194dff;
+    --dark-red: #780206;
     --line-height: 1.7rem;
-    --transition: 0.4s ease-in;
+    --transition: 0.2s ease-in;
 }
 
 /* Resets */
@@ -22,6 +24,7 @@
     padding: 0;
     box-sizing: border-box;
     transition: var(--transition);
+
 }
 
 body {
@@ -38,7 +41,8 @@ body {
 section {
     min-height: 100vh;
 }
-section footer{
+
+section footer {
     min-height: fit-content;
 }
 
@@ -49,6 +53,7 @@ section footer{
     gap: 1rem;
     display: flex;
     justify-content: center;
+
 }
 
 .navbar h1 {
@@ -63,6 +68,7 @@ section footer{
 .navbar {
     padding: 1rem;
     color: var(--white);
+    /*background-image: linear-gradient( 94.3deg,  rgba(26,33,64,1) 10.9%, rgba(81,84,115,1) 87.1% );*/
 
 
 }
@@ -89,12 +95,13 @@ header {
 }
 
 #navbar-section-container a:hover {
-    background-color: #FAD961;
-    background-image: linear-gradient(90deg, #FAD961 0%, #F76B1C 100%);
-
-    color: black;
+    background-color: #e52d27;
+    background-image: linear-gradient(to right, #e52d27 0%, #b31217 51%, #e52d27 100%);
+    color: var(--black);
+    text-transform: full-width;
     border-radius: 1rem;
 }
+
 
 #content {
     width: auto;
@@ -111,7 +118,7 @@ i {
 }
 
 .resume-link {
-    background-color: var(--skobeloff);
+    background-color: var(--midnight-green-eagle-green);
     border-radius: 1rem;
 }
 
@@ -131,6 +138,7 @@ i {
     padding: 1rem;
     height: 100%;
     justify-content: center;
+
 }
 
 #about-section-container img {
@@ -156,12 +164,12 @@ i {
 #about-section-container h1 {
     font-weight: bold;
     font-size: 12rem;
-    color: var(--russian-violet);
+    color: var(--white);
     font-family: "JetBrains Mono ExtraBold", monospace;
 }
 
 #about-section-container h2 {
-    color: var(--skobeloff);
+    color: var(--midnight-green-eagle-green);
     text-align: center;
     font-size: 8rem;
     font-family: "Roboto Light", sans-serif;
@@ -169,15 +177,88 @@ i {
 }
 
 /* Project Section */
+#project-section-container {
+    color: var(--black);
+    background-color: wheat;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
 #project-section-container header {
     text-align: center;
-    font-size: 4rem;
+    font-size: 6rem;
+    color: var(--black);
+}
+
+.card-body a {
+    text-decoration: none;
+
+}
+
+.card-body i {
+    padding: 1rem;
+
+}
+
+.card-body h6 {
+    text-align: center;
+    background-image: linear-gradient(to right, #e52d27 0%, #b31217 51%, #e52d27 100%);
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+
+    border-radius: 10px;
+    display: block;
+}
+
+
+.card-body h6:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 2rem;
+    color: var(--midnight-green-eagle-green);
+}
+
+.card-body {
+    padding: 1rem;
+    text-align: center;
+}
+
+.card-body h6 {
+    border-radius: 2rem;
+    text-align: center;
+    background-color: var(--russian-violet);
     color: var(--white);
+}
+
+.card-body ul {
+    display: flex;
+    flex-flow: row;
+    gap: 1.5rem;
+    align-content: center;
+    justify-content: center;
+
+}
+
+.img-thumbnail {
+    width: 100%;
+
+}
+
+.technologies-list {
+    color: var(--midnight-green-eagle-green);
+
 }
 
 .card-container {
     display: flex;
-    margin: 2rem;
+    margin: 2rem auto;
     padding: 2rem;
     flex-flow: row;
 }
@@ -187,13 +268,24 @@ i {
     background-color: var(--space-cadet);
 }
 
+.card-image img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
+
+}
+
+#project-section-container a:hover {
+    opacity: 0.8;
+}
+
+
 /* Footer Section Started */
 /* Footer section style */
 footer {
     display: block;
     text-align: center;
     margin: 0;
-    color: var(--skobeloff);
+    color: var(--white);
     padding: 4rem 0;
 }
 
@@ -205,12 +297,18 @@ footer ul {
     padding: 0;
     flex-flow: row wrap;
     justify-content: center;
+
     align-items: center;
     font-family: oxygen, sans-serif;
     gap: 3rem;
     font-size: 3rem;
 
 
+}
+
+footer a:hover {
+    color: #e52d27;
+    opacity: 0.8;
 }
 
 footer [class*="fa-"] {

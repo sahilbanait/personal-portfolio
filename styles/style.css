@@ -274,8 +274,24 @@ i {
 
 }
 
+.card-body h6 {
+    font-weight: bold;
+}
+
 #project-section-container a:hover {
     opacity: 0.8;
+}
+/*Contact section started*/
+#contact-section-container{
+    background-color: var(--midnight-green-eagle-green-2);
+    display: block;
+    padding: 1rem;
+
+}
+#contact-section-container header{
+    text-align: center;
+    color: var(--black);
+    margin: 1rem;
 }
 
 
@@ -328,6 +344,7 @@ footer h3 {
 
 @media screen and (max-width: 720px) {
 
+
     .card-container {
         flex-direction: column;
     }
@@ -338,7 +355,13 @@ footer h3 {
         display: initial;
     }
 
+
 }
+
+@media screen and (max-width: 1200px) {
+
+}
+
 
 .section-gradient-separator {
     border-radius: 1rem;

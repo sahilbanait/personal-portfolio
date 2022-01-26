@@ -281,26 +281,70 @@ i {
 #project-section-container a:hover {
     opacity: 0.8;
 }
+
 /*Contact section started*/
-#contact-section-container{
+#contact-section-container {
     background-color: var(--midnight-green-eagle-green-2);
     display: block;
     padding: 1rem;
+    transition: none;
+    font-size: 1rem;
+    text-align: center;
+    font-family: "JetBrains Mono", monospace;
+}
+.form-control{
+    border: 5px solid var(--midnight-green-eagle-green-3);
+    height: 500px;
+}
+form{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+
 
 }
-#contact-section-container header{
+form .a{
+    background-color: var(--midnight-green-eagle-green);
+    border-radius: 1rem;
+    padding: 1rem;
+
+
+}
+form .a:hover {
+    background-color: #e52d27;
+    background-image: linear-gradient(to right, #e52d27 0%, #b31217 51%, #e52d27 100%);
+    color: var(--black);
+    text-transform: full-width;
+    border-radius: 1rem;
+
+
+}
+
+#contact-section-container header {
     text-align: center;
     color: var(--black);
     margin: 1rem;
 }
 
+tr{
+ text-align: center;
+
+}
+
+
+#contact-section-container  td {
+    padding: 1rem;
+
+
+}
+
 
 /* Footer Section Started */
-/* Footer section style */
 footer {
     display: block;
     text-align: center;
     margin: 0;
+
     color: var(--white);
     padding: 4rem 0;
 }
@@ -342,6 +386,20 @@ footer h3 {
 
 /* Footer section ended */
 
+
+/* Gradient to separate the sections */
+
+.section-gradient-separator {
+    border-radius: 1rem;
+    height: 0.2rem;
+    background-color: #FAD961;
+    background-image: linear-gradient(90deg, #FAD961 0%, #F76B1C 100%);
+
+}
+
+
+/* media queries for different screens */
+
 @media screen and (max-width: 720px) {
 
 
@@ -363,10 +421,3 @@ footer h3 {
 }
 
 
-.section-gradient-separator {
-    border-radius: 1rem;
-    height: 0.2rem;
-    background-color: #FAD961;
-    background-image: linear-gradient(90deg, #FAD961 0%, #F76B1C 100%);
-
-}

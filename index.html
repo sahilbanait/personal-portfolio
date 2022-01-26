@@ -45,9 +45,9 @@
                 </button>
                 <ul>
                     <li><a href="#about-section-container">Home</a></li>
-                    <li><a href="#" target="_blank">About</a></li>
+                    <li><a href="#" >About</a></li>
                     <li><a href="#project-section-container">Projects</a></li>
-                    <li><a href="#">Contact me</a></li>
+                    <li><a href="#contact-section-container">Contact me</a></li>
                     <li><a href="https://www.linkedin.com/in/sahil-kumar-30424419b/" target="_blank"><i
                             class="fab fa-linkedin"></i></a></li>
                     <li><a href="https://github.com/sahilbanait" target="_blank"><i
@@ -208,42 +208,44 @@
         </section>
         <!-- Grid row -->
         <div class="section-gradient-separator"></div>
+
         <!--        Contact section-->
-        <section id="contact-section-container" class="container-fluid">
-            <header>Contact me</header>
-            <div class="form-container">
-                <form>
-                    <!-- Name input -->
-                    <div class="form-outline mb-4">
-                        <input type="text" id="form4Example1" class="form-control"/>
-                        <label class="form-label" for="form4Example1">Name</label>
-                    </div>
+        <div id="contact-section-container" class="container-fluid ">
+            <section >
+                <header>Contact me</header>
+                <div class="form-container form-control">
+                    <form >
+                        <table class="table-responsive-lg">
+                            <tr>
+                                <td>Name</td>
+                                <td><input type="text" name="full-name"></td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td><input type="text" name="full-name"></td>
+                            </tr>
+                            <tr>
+                                <td>Subject</td>
+                                <td><input type="text" name="full-name"></td>
+                            </tr>
+                            <tr>
+                                <td>Message</td>
+                                <td><label>
+                                    <textarea type="comments" name="Enter your message"></textarea>
+                                </label></td>
+                            </tr>
 
-                    <!-- Email input -->
-                    <div class="form-outline mb-4">
-                        <input type="email" id="form4Example2" class="form-control"/>
-                        <label class="form-label" for="form4Example2">Email address</label>
-                    </div>
-
-                    <!-- Message input -->
-                    <div class="form-outline mb-4">
-                        <textarea class="form-control" id="form4Example3" rows="4"></textarea>
-                        <label class="form-label" for="form4Example3">Message</label>
-                    </div>
-
-                    <!-- Checkbox -->
-                    <div class="form-check d-flex justify-content-center mb-4">
-                        <input class="form-check-input me-2" type="checkbox" value="" id="form4Example4" checked/>
-                        <label class="form-check-label" for="form4Example4">
-                            Send me a copy of this message
-                        </label>
-                    </div>
-
+                        </table>
+                        <input type="submit" class="a">
+                    </form>
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4">Send</button>
-                </form>
-            </div>
-        </section>
+
+
+
+                </div>
+            </section>
+        </div>
+
 
         <!--Footer section-->
 

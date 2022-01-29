@@ -32,6 +32,7 @@ body {
     font-size: medium;
     scroll-behavior: smooth;
     display: block;
+
     font-family: "JetBrains Mono", monospace;
 
 }
@@ -125,7 +126,7 @@ i {
 
 
 /* About Section styles */
-#about-section-container {
+#hero-section-container {
     display: flex;
     flex-flow: column wrap;
     align-content: center;
@@ -136,22 +137,22 @@ i {
 
 }
 
-#about-section-container img {
+#hero-section-container img {
     height: 350px;
     width: 350px;
     align-self: center;
     border-radius: 180px;
 }
 
-.about-image {
+.hero-image {
     text-align: center;
 }
-.about-image:hover{
+.hero-image:hover{
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
 }
 
-.about-text {
+.hero-text {
     font-family: "JetBrains Mono ExtraBold", monospace;
     color: var(--white);
     text-align: center;
@@ -160,14 +161,14 @@ i {
 
 }
 
-#about-section-container h1 {
+#hero-section-container h1 {
     font-weight: bold;
     font-size: 12rem;
     color: var(--white);
     font-family: "JetBrains Mono ExtraBold", monospace;
 }
 
-#about-section-container h2 {
+#hero-section-container h2 {
     color: var(--midnight-green-eagle-green);
     text-align: center;
     font-size: 8rem;
@@ -179,7 +180,7 @@ i {
 #project-section-container {
     color: var(--black);
     background-color: wheat;
-    margin: 0 auto;
+    margin: 2rem 0 2rem 0;
     min-height: 100vh;
     padding: 1rem;
 }
@@ -296,6 +297,7 @@ header {
     padding: 1rem;
     font-size: 100%;
     color: var(--white);
+    margin: 2rem 0 2rem 0;
 
 }
 
@@ -419,7 +421,7 @@ footer h3 {
 
     }
 
-    .about-text h1, h2 {
+    .hero-text h1, h2 {
         font-size: 50%;
     }
 

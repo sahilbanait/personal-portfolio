@@ -147,21 +147,20 @@ i {
     font-family: "JetBrains Mono ExtraBold", monospace;
     color: var(--white);
     text-align: center;
-    display: flex;
-    flex-flow: column;
+
+
 
 }
 
 #hero-image-container {
     width: 100%;
-
     height: auto;
     min-width: 300px;
 }
 
 #hero-section-container h3 {
-
-    font-size: 20vw;
+    font-size: 10vw;
+    padding: 2rem;
     color: var(--white);
     font-family: "JetBrains Mono Medium", monospace;
 }
@@ -169,7 +168,7 @@ i {
 #hero-section-container h4 {
     font-family: Staa, cursive;
     text-align: center;
-    font-size: 10vw;
+    font-size: 5vw;
 
 
     background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
@@ -183,7 +182,8 @@ i {
 #about-section {
     width: 100%;
     min-height: 100vh;
-    padding: 150px 100px 0;
+    margin: 2rem;
+    padding: 2rem;
     position: relative;
     top: 0;
     transition: 1s;
@@ -192,7 +192,7 @@ i {
 .about {
     width: 100%;
     display: grid;
-    grid-template-columns: 30% 70%;
+    grid-template-columns: 20% 70%;
     grid-gap: 90px;
 }
 
@@ -202,6 +202,7 @@ i {
 }
 
 .about-text {
+    text-align: center;
     color: white;
     opacity: 0.6;
     font-size: 20px;
@@ -242,16 +243,16 @@ i {
 /* Project Section */
 #project-section-container {
     color: var(--black);
-    background: hsla(205, 46%, 10%, 1);
+    /*background: hsla(205, 46%, 10%, 1);*/
 
-    background: linear-gradient(90deg, hsla(205, 46%, 10%, 1) 0%, hsla(191, 28%, 23%, 1) 50%, hsla(207, 41%, 27%, 1) 100%);
+    /*background: linear-gradient(90deg, hsla(205, 46%, 10%, 1) 0%, hsla(191, 28%, 23%, 1) 50%, hsla(207, 41%, 27%, 1) 100%);*/
 
-    background: -moz-linear-gradient(90deg, hsla(205, 46%, 10%, 1) 0%, hsla(191, 28%, 23%, 1) 50%, hsla(207, 41%, 27%, 1) 100%);
+    /*background: -moz-linear-gradient(90deg, hsla(205, 46%, 10%, 1) 0%, hsla(191, 28%, 23%, 1) 50%, hsla(207, 41%, 27%, 1) 100%);*/
 
-    background: -webkit-linear-gradient(90deg, hsla(205, 46%, 10%, 1) 0%, hsla(191, 28%, 23%, 1) 50%, hsla(207, 41%, 27%, 1) 100%);
+    /*background: -webkit-linear-gradient(90deg, hsla(205, 46%, 10%, 1) 0%, hsla(191, 28%, 23%, 1) 50%, hsla(207, 41%, 27%, 1) 100%);*/
 
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0E1C26", endColorstr="#2A454B", GradientType=1);
-    margin: 2rem 0 2rem 0;
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0E1C26", endColorstr="#2A454B", GradientType=1);*/
+
     min-height: 100vh;
     padding: 1rem;
 
@@ -366,20 +367,21 @@ header {
 /*Contact section started*/
 
 #contact-section-container {
-    background: hsla(23, 41%, 9%, 1);
+    /*background: hsla(23, 41%, 9%, 1);*/
 
-    background: linear-gradient(90deg, hsla(23, 41%, 9%, 1) 0%, hsla(18, 16%, 53%, 1) 100%);
+    /*background: linear-gradient(90deg, hsla(23, 41%, 9%, 1) 0%, hsla(18, 16%, 53%, 1) 100%);*/
 
-    background: -moz-linear-gradient(90deg, hsla(23, 41%, 9%, 1) 0%, hsla(18, 16%, 53%, 1) 100%);
+    /*background: -moz-linear-gradient(90deg, hsla(23, 41%, 9%, 1) 0%, hsla(18, 16%, 53%, 1) 100%);*/
 
-    background: -webkit-linear-gradient(90deg, hsla(23, 41%, 9%, 1) 0%, hsla(18, 16%, 53%, 1) 100%);
+    /*background: -webkit-linear-gradient(90deg, hsla(23, 41%, 9%, 1) 0%, hsla(18, 16%, 53%, 1) 100%);*/
 
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1F140D", endColorstr="#9B8074", GradientType=1);
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1F140D", endColorstr="#9B8074", GradientType=1);*/
     display: block;
     padding: 1rem;
-    font-size: 1.5vw;
+    font-size: 1vw;
     color: var(--white);
-    margin: 2rem 0 2rem 0;
+
+
 
 }
 

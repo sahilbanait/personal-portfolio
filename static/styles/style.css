@@ -1,3 +1,4 @@
+
 .root {
     font-family: "JetBrains Mono", monospace;
     /* CSS HEX */
@@ -72,10 +73,10 @@ section footer {
 .navbar {
     padding: 1rem;
     color: var(--white);
+
     /*background-image: linear-gradient( 94.3deg,  rgba(26,33,64,1) 10.9%, rgba(81,84,115,1) 87.1% );*/
-
-
 }
+
 
 .navbar-toggler.toggler-example {
     cursor: pointer;
@@ -126,7 +127,7 @@ i {
 }
 
 
-/* About Section styles */
+/* Hero Section styles */
 #hero-section-container {
     display: flex;
     flex-flow: column wrap;
@@ -147,6 +148,7 @@ i {
 
 .hero-image {
     text-align: center;
+
 }
 
 .hero-image:hover {
@@ -163,20 +165,36 @@ i {
 
 }
 
+#hero-image-container {
+    width: 100%;
+    height: auto;
+    min-width: 300px;
+}
+
 #hero-section-container h1 {
     font-weight: bold;
-    font-size: 12rem;
+    font-size: 20vw;
     color: var(--white);
     font-family: "JetBrains Mono ExtraBold", monospace;
 }
 
 #hero-section-container h2 {
-    color: var(--midnight-green-eagle-green);
+    font-family: Staa, cursive;
     text-align: center;
-    font-size: 8rem;
-    font-family: "Roboto Light", sans-serif;
+    font-size: 10vw;
 
+
+    background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
+
+/*About me*/
+#about-section-container {
+    background-color: var(--byzantine);
+}
+
+/*About me ended*/
 
 /* About section started*/
 #about-section-container {
@@ -206,6 +224,7 @@ i {
     margin: 2rem 0 2rem 0;
     min-height: 100vh;
     padding: 1rem;
+
 }
 
 header {
@@ -248,6 +267,8 @@ header {
 
 .card-body {
     padding: 1rem;
+    width: 100%;
+    margin: 0 auto;
     text-align: center;
 }
 
@@ -326,7 +347,7 @@ header {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1F140D", endColorstr="#9B8074", GradientType=1);
     display: block;
     padding: 1rem;
-    font-size: 100%;
+    font-size: 1.5vw;
     color: var(--white);
     margin: 2rem 0 2rem 0;
 
@@ -440,6 +461,7 @@ footer h3 {
     background-color: #FAD961;
     background-image: linear-gradient(90deg, #FAD961 0%, #F76B1C 100%);
 
+
 }
 
 
@@ -447,9 +469,7 @@ footer h3 {
 
 @media screen and (max-width: 720px) {
     body {
-        font-size: 50%;
-
-
+        font-size: 100%;
     }
 
     .hero-text h1, h2 {
@@ -461,15 +481,18 @@ footer h3 {
         width: 50%;
     }
 
-    .navbar span {
-        font-size: 2rem;
-        color: #F76B1C;
-        display: initial;
-    }
+    /*.navbar span {*/
+    /*    font-size: 2rem;*/
+    /*    color: #F76B1C;*/
+    /*    display: initial;*/
+    /*}*/
 
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (min-width: 720px) {
+    .col-md-2 .col-xl-3 .card-body {
+        overflow: auto;
+    }
 
 }
 

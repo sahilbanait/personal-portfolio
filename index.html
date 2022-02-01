@@ -28,7 +28,7 @@
 <div id="background">
     <div class="root container-fluid" id="container">
         <!--    Navbar section started -->
-        <div id="navbar-section-container" >
+        <div id="navbar-section-container">
             <nav class="navbar sticky-top navbar-expand-lg navbar-light">
                 <div class="container-fluid">
                     <button class="navbar-toggler bg-light"
@@ -40,20 +40,24 @@
                             aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon "></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarScroll">
-                        <a class="navbar-brand"> </a>
-                        <i class="fab fa-napster">SK</i>
+                    <div class="collapse navbar-collapse show">
+                        <a class="navbar-brand logo"><i class="fab fa-napster" id="logo">SK</i>
+                        </a>
 
                         <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
                             <li class="nav-item"><a class="nav-link" href="#hero-section-container">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="#about-section-container">About</a></li>
                             <li class="nav-item"><a class="nav-link" href="#project-section-container">Projects</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#contact-section-container">Contact me</a></li>
-                            <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/sahil-kumar-30424419b/" target="_blank"><i
+                            <li class="nav-item"><a class="nav-link" href="#contact-section-container">Contact me</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link"
+                                                    href="https://www.linkedin.com/in/sahil-kumar-30424419b/"
+                                                    target="_blank"><i
                                     class="fab fa-linkedin"></i></a></li>
-                            <li class="nav-item"><a class="nav-link" href="https://github.com/sahilbanait" target="_blank"><i
+                            <li class="nav-item"><a class="nav-link" href="https://github.com/sahilbanait"
+                                                    target="_blank"><i
                                     class="fab fa-github-square"></i></a></li>
-                            <li class="nav-item"><a class="nav-link" class="resume-link" href="#">Resume</a></li>
+                            <li class="nav-item"><a class="nav-link resume-link" href="#">Resume</a></li>
                         </ul>
                     </div>
                 </div>
@@ -67,32 +71,56 @@
             <section id="hero-section-container">
                 <div id="hero-image-container">
                     <div class="hero-image">
-                        <img alt="self-image" src="static/images/self-image.jpg">
+                        <img alt="self-image" src="static/images/project-1.png">
                     </div>
                 </div>
 
                 <div class="hero-text">
-                    <h1>Hello.</h1>
-                    <h2>I am Sahil Kumar </h2>
-
+                    <h3>Hello.</h3>
+                    <h4>I am Sahil Kumar </h4>
                 </div>
             </section>
             <!--        Hero section end-->
         </header>
+
         <main>
             <!--About section-->
-            <div class="container-fluid" id="about-section-container">
+            <div id="about-section-container" class="container-fluid">
                 <section id="about-section">
-                    <div class="col-md-6" style="background-color: #780206">
-                        A
+                    <header><h2 class="h1-responsive font-weight-bold my-5">About</h2></header>
+                    <div class="about">
+                        <div class="about-image-container">
+                            <img src="static/images/porfolio-about-image.png" class="about-image">
+                            <button class="download-resume-btn">Download Resume</button>
+                        </div>
+                        <div class="about-text-container">
+                            <p class="about-text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae turpis
+                                hendrerit,
+                                pharetra erat id, sagittis quam. Pellentesque fermentum vestibulum nisi sit amet
+                                convallis.
+                                Integer placerat erat eu diam feugiat, ac condimentum libero finibus.
+                                Sed arcu eros, elementum et nisi id, molestie efficitur odio. Nam varius ligula neque,
+                                iaculis tristique turpis porta vel.
+                                Suspendisse in feugiat lectus.
+                                Proin quis tellus at libero sagittis tempus eget vel metus.
+                                Aliquam sed ultricies nunc, ac finibus felis. Suspendisse vulputate mattis purus,
+                                eu fringilla nisi dictum ac. Pellentesque et nibh eget turpis tristique convallis sit
+                                amet
+                                sed risus.
+                                Sed eu bibendum nunc. Donec rutrum lacus metus, nec efficitur enim lobortis a.
+                                Donec tellus arcu, maximus quis tortor sit amet,
+                                faucibus pulvinar sapien. Donec laoreet id lectus in convallis.
+                                Aliquam iaculis ultricies erat, non posuere dui ultrices id. Sed efficitur in ligula in
+                                vulputate.
+
+                            </p>
+                        </div>
+
                     </div>
-                    <div class="col-md-6" style="background-color: #F76B1C">
-                        B
-                    </div>
+
                 </section>
             </div>
-
-            <div class="section-gradient-separator"></div>
 
             <!--        Project section started-->
 
@@ -100,8 +128,6 @@
 
                 <header><h2 class="h1-responsive font-weight-bold my-5">My best projects</h2></header>
                 <!-- Section heading -->
-
-
                 <!-- Grid row -->
                 <div class="row d-flex justify-content-center">
                     <!-- Grid column -->
@@ -222,7 +248,6 @@
                 </div>
             </section>
             <!-- Grid row -->
-            <div class="section-gradient-separator"></div>
 
             <!--        Contact section-->
             <section id="contact-section-container">

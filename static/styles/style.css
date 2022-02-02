@@ -170,7 +170,7 @@ i {
 .hero-headline {
     padding: 2rem;
     color: var(--white);
-    font-size: 100px;
+    font-size: 10vw;
     font-family: "JetBrains Mono Medium", monospace;
     background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
     -webkit-background-clip: text;
@@ -354,11 +354,13 @@ i {
 }
 
 /* Skills Section ended*/
+
 /* Timeline Section started*/
 .timeline {
     display: block;
-    width: 80%;
-    margin: 150px auto;
+    width: 50%;
+    height: 50%;
+    margin: 200px auto;
 }
 
 .timeline strong {
@@ -368,19 +370,20 @@ i {
 .timeline-heading {
     text-align: center;
     font-size: 60px;
+
     color: var(--white);
     text-transform: capitalize;
     font-weight: 300;
-    margin-bottom: 100px;
+    margin-bottom: 150px;
 }
 
 .timeline-card {
     width: 45%;
+
     padding: 30px;
     border-radius: 10px;
     color: var(--white);
     display: block;
-    margin: -80px 0;
     position: relative;
     background: var(--midnight-green-eagle-green);
 }
@@ -500,6 +503,7 @@ i {
 
 .project-card {
     height: 400px;
+    width: 100%;
     position: relative;
 }
 
@@ -562,6 +566,9 @@ i {
 }
 #contact-section-container{
     min-height: 100vh;
+}
+form{
+
 }
 form input, form textarea {
     width: 100%;

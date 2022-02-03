@@ -147,6 +147,7 @@ i {
 
 .hero-image {
     text-align: center;
+    margin-top: 100px;
 
 }
 
@@ -158,7 +159,9 @@ i {
 .hero-text {
     font-family: "JetBrains Mono ExtraBold", monospace;
     color: var(--white);
+    width: 100%;
     text-align: center;
+    margin-top: 100px;
 }
 
 #hero-image-container {
@@ -167,11 +170,16 @@ i {
     min-width: 300px;
 }
 
-.hero-headline {
-    padding: 2rem;
-    color: var(--white);
+.hero-text h1{
+    font-weight: bold;
     font-size: 10vw;
-    font-family: "JetBrains Mono Medium", monospace;
+    color: var(--white);
+    font-family: "JetBrains Mono ExtraBold", monospace;
+}
+.hero-text h2{
+    text-align: center;
+    font-size: 8vw;
+    font-family: "Roboto Light", sans-serif;
     background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -379,7 +387,6 @@ i {
 
 .timeline-card {
     width: 45%;
-
     padding: 30px;
     border-radius: 10px;
     color: var(--white);
@@ -696,7 +703,7 @@ footer h3 {
 
 /* media queries for different screens */
 
-@media screen and (max-width: 720px) {
+@media only screen and (max-width: 768px) {
     .about{
         display: flex;
         flex-direction: column;
@@ -715,13 +722,10 @@ footer h3 {
         width: 50%;
         height: 50%;
     }
-    .skill-section .skill-card{
+    .skills-container{
         width: 50%;
-        display: flex;
-        flex-direction: column;
-        flex-flow: column;
-        font-size: 20px;
     }
+    .skill-le
     .timeline{
             width: 50%;
              height: 50%;
@@ -748,6 +752,33 @@ footer h3 {
     }
 
 
+}
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+    .card-container {
+        flex-direction: row;
+        font-size: 50%;
+
+    }
+    .about-text-container{
+        width: 100%;
+        font-size: 50%;
+        text-align: center;
+    }
+    .about-image-container{
+        width: 100%;
+
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .about-text-container{
+        width: 100%;
+        font-size: 100%;
+        text-align: left;
+    }
 }
 
 

@@ -408,8 +408,10 @@ i {
 
 .timeline-card {
     width: 45%;
+    height: 300px;
     padding: 10px;
     border-radius: 10px;
+    text-align: center;
     color: var(--white);
     display: block;
     position: relative;
@@ -420,8 +422,12 @@ i {
     margin-left: auto;
 }
 
-.card-detail {
+.card-title p{
     margin-bottom: 0;
+    font-size: 2vw;
+}
+.card-body{
+    margin-top: 50px;
 }
 
 .timeline-card:nth-child(even):before {
@@ -472,6 +478,9 @@ i {
     z-index: -1;
 }
 
+.timeline-card:nth-child(2), .timeline-card:nth-child(1):before {
+    background: rgba(98, 240, 22, 0.86);
+}
 .timeline-card:nth-child(2), .timeline-card:nth-child(2):before {
     background: #ff4f4f;
 }
@@ -842,28 +851,21 @@ footer h3 {
     }
 
     .card-body p {
-        font-size: 10px;
-        margin: 0 auto;
+        margin: 10px auto;
     }
     .timeline{
+        display: block;
+        width: 100%;
+        height: 100%;
         margin: 0 auto;
     }
-
-    .timeline h1 {
-        font-size: 20px;
+    .timeline-card{
 
     }
-
-    .timeline-card {
-        width: 150px;
-        height: 150px;
-        padding: 10px;
-        border-radius: 10px;
-        color: var(--white);
-        display: block;
-        position: relative;
-        background: var(--midnight-green-eagle-green);
+    .card-body{
+        margin-top: 50px;
     }
+
 
     #project-section-container {
         font-size: 50%;

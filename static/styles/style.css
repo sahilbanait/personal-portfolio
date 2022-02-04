@@ -44,7 +44,7 @@ h2 {
     font-size: 100px;
     text-align: center;
     text-transform: capitalize;
-    margin: 2rem;
+    margin: 1.5rem;
 }
 
 #background {
@@ -298,7 +298,7 @@ i {
 
 .skills-container {
     width: 95%;
-    margin: auto;
+    margin: 50px auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 100px;
@@ -389,7 +389,7 @@ i {
     display: block;
     width: 50%;
     height: 50%;
-    margin: 200px auto;
+    margin: 100px auto;
 }
 
 .timeline strong {
@@ -528,6 +528,7 @@ i {
 
 .project-card-container {
     display: grid;
+    margin: 50px auto;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 100px;
 
@@ -887,9 +888,11 @@ footer h3 {
 
     .contact-section {
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        flex-flow: column;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        justify-content: center;
+        align-items: center;
+        min-height: fit-content;
     }
 
     form input, form textarea {

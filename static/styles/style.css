@@ -69,6 +69,9 @@ section footer {
     justify-content: center;
 
 }
+.nav-items{
+    justify-content: end;
+}
 
 .navbar-brand:after {
     padding-top: 0.3125rem;
@@ -81,6 +84,9 @@ section footer {
 .navbar h1 {
     font-size: 4rem;
     color: var(--skobeloff);
+}
+.nav-toggle{
+    display: none;
 }
 
 #logo {
@@ -423,7 +429,7 @@ i {
 
 .card-title p{
     margin-bottom: 0;
-    font-size: 2vw;
+    font-size: 100px;
 }
 
 .timeline-card:nth-child(even):before {
@@ -738,6 +744,7 @@ footer h3 {
 
 @media only screen and (max-width: 768px) {
 
+
     .hero-image {
         position: center;
         margin: 0 auto;
@@ -800,7 +807,7 @@ footer h3 {
 
     .skills-container {
         display: grid;
-        grid-gap: 10px;
+        grid-gap: 5px;
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -848,6 +855,7 @@ footer h3 {
 
     .card-body p {
         margin: 10px auto;
+        font-size: 15px;
 
     }
     .timeline{
@@ -900,29 +908,9 @@ footer h3 {
         font-size: 20px;
     }
 
-    .navbar:first-child {
-        justify-content: center;
-        align-items: center;
-    }
+
 }
-/*@media  screen  and (){*/
-/*    .card-body{*/
-/*        margin-top: 0;*/
-/*    }*/
-/*    .card-body p{*/
-/*        font-size: 1.5vw;*/
-/*    }*/
-/*    .skills-container {*/
-/*        width: 80%;*/
-/*        margin: 50px auto;*/
-/*        display: grid;*/
-/*        justify-content: center;*/
-/*        align-items: center;*/
-/*        grid-template-columns: repeat(3, 1fr);*/
-/*        grid-gap: 100px;*/
-/*        color: var(--white);*/
-/*    }*/
-/*}*/
+
 
 
 

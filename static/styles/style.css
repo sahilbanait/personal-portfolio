@@ -398,8 +398,7 @@ i {
 
 .timeline-heading {
     text-align: center;
-    font-size: 60px;
-
+    font-size: 50px;
     color: var(--white);
     text-transform: capitalize;
     font-weight: 300;
@@ -425,9 +424,6 @@ i {
 .card-title p{
     margin-bottom: 0;
     font-size: 2vw;
-}
-.card-body{
-    margin-top: 50px;
 }
 
 .timeline-card:nth-child(even):before {
@@ -505,9 +501,9 @@ i {
     background: #f8d3a6;
 }
 
-.card-title {
-    font-size: 30px;
+.card-detail {
     font-weight: 300;
+    font-size: 1.2vw;
     margin-bottom: 20px;
 }
 
@@ -852,6 +848,7 @@ footer h3 {
 
     .card-body p {
         margin: 10px auto;
+
     }
     .timeline{
         display: block;
@@ -863,7 +860,7 @@ footer h3 {
 
     }
     .card-body{
-        margin-top: 50px;
+        margin-top: 20px;
     }
 
 
@@ -907,9 +904,25 @@ footer h3 {
         justify-content: center;
         align-items: center;
     }
-
-
 }
+/*@media  screen  and (){*/
+/*    .card-body{*/
+/*        margin-top: 0;*/
+/*    }*/
+/*    .card-body p{*/
+/*        font-size: 1.5vw;*/
+/*    }*/
+/*    .skills-container {*/
+/*        width: 80%;*/
+/*        margin: 50px auto;*/
+/*        display: grid;*/
+/*        justify-content: center;*/
+/*        align-items: center;*/
+/*        grid-template-columns: repeat(3, 1fr);*/
+/*        grid-gap: 100px;*/
+/*        color: var(--white);*/
+/*    }*/
+/*}*/
 
 
 

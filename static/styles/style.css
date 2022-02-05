@@ -48,7 +48,10 @@ h2 {
 }
 
 #background {
-    background-color: black;
+    background-color: #0a0909;
+    background-image: linear-gradient(225deg, #0a0909 0%, #151516 50%, #000000 100%);
+
+    position: sticky;
 
 }
 
@@ -106,6 +109,7 @@ section footer {
     margin: 0 auto;
     font-size: 1.2rem;
     color: var(--white);
+    border-radius: 10px;
 }
 
 #navbar-section-container a:hover {
@@ -115,8 +119,6 @@ section footer {
     text-transform: full-width;
 
 }
-
-
 #content {
     width: auto;
     height: auto;
@@ -169,7 +171,8 @@ i {
 
 .hero-image img:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
+    box-shadow: 0 10px 20px rgb(255, 255, 255), 0 4px 8px rgb(143, 18, 143);
+
 }
 
 .hero-text {
@@ -910,7 +913,24 @@ footer h3 {
 
 
 }
-
+/*@media  screen  and (){*/
+/*    .card-body{*/
+/*        margin-top: 0;*/
+/*    }*/
+/*    .card-body p{*/
+/*        font-size: 1.5vw;*/
+/*    }*/
+/*    .skills-container {*/
+/*        width: 80%;*/
+/*        margin: 50px auto;*/
+/*        display: grid;*/
+/*        justify-content: center;*/
+/*        align-items: center;*/
+/*        grid-template-columns: repeat(3, 1fr);*/
+/*        grid-gap: 100px;*/
+/*        color: var(--white);*/
+/*    }*/
+/*}*/
 
 
 

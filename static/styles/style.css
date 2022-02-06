@@ -391,19 +391,19 @@ i {
 
 /* Skills section ended*/
 
-/* Timeline section started*/
-.timeline {
+/* Education section started*/
+.education {
     display: block;
     width: 50%;
     height: 50%;
     margin: 100px auto;
 }
 
-.timeline strong {
+.education strong {
     color: var(--black);
 }
 
-.timeline-heading {
+.education-heading {
     text-align: center;
     font-size: 50px;
     color: var(--white);
@@ -412,7 +412,7 @@ i {
     margin-bottom: 150px;
 }
 
-.timeline-card {
+.education-card {
     width: 45%;
     height: 300px;
     padding: 10px;
@@ -424,7 +424,7 @@ i {
     background: var(--midnight-green-eagle-green);
 }
 
-.timeline-card:nth-child(even) {
+.education-card:nth-child(even) {
     margin-left: auto;
 }
 
@@ -433,7 +433,7 @@ i {
     font-size: 100px;
 }
 
-.timeline-card:nth-child(even):before {
+.education-card:nth-child(even):before {
     content: '';
     position: absolute;
     left: -15%;
@@ -445,7 +445,7 @@ i {
     border: 5px solid var(--black);
 }
 
-.timeline-card:nth-child(even):after {
+.education-card:nth-child(even):after {
     content: '';
     position: absolute;
     left: -8.5%;
@@ -457,7 +457,7 @@ i {
     z-index: -1;
 }
 
-.timeline-card:nth-child(odd):before {
+.education-card:nth-child(odd):before {
     content: '';
     position: absolute;
     right: -13%;
@@ -469,7 +469,7 @@ i {
     border: 5px solid var(--black);
 }
 
-.timeline-card:nth-child(odd):after {
+.education-card:nth-child(odd):after {
     content: '';
     position: absolute;
     right: -8.5%;
@@ -481,31 +481,31 @@ i {
     z-index: -1;
 }
 
-.timeline-card:nth-child(2), .timeline-card:nth-child(1):before {
+.education-card:nth-child(2), .education-card:nth-child(1):before {
     background: rgba(98, 240, 22, 0.86);
 }
 
-.timeline-card:nth-child(2), .timeline-card:nth-child(2):before {
+.education-card:nth-child(2), .education-card:nth-child(2):before {
     background: #ff4f4f;
 }
 
-.timeline-card:nth-child(3), .timeline-card:nth-child(3):before {
+.education-card:nth-child(3), .education-card:nth-child(3):before {
     background: #68c5dc;
 }
 
-.timeline-card:nth-child(4), .timeline-card:nth-child(4):before {
+.education-card:nth-child(4), .education-card:nth-child(4):before {
     background: #7b2eac;
 }
 
-.timeline-card:nth-child(5), .timeline-card:nth-child(5):before {
+.education-card:nth-child(5), .education-card:nth-child(5):before {
     background: #afdb13;
 }
 
-.timeline-card:nth-child(6), .timeline-card:nth-child(6):before {
+.education-card:nth-child(6), .education-card:nth-child(6):before {
     background: #ff4f7b;
 }
 
-.timeline-card:nth-child(7), .timeline-card:nth-child(7):before {
+.education-card:nth-child(7), .education-card:nth-child(7):before {
     background: #f8d3a6;
 }
 
@@ -551,7 +551,13 @@ i {
 .project-card {
     height: 400px;
     width: 100%;
+    border-radius: 20px;
     position: relative;
+}
+#project-section-container {
+    -vendor-animation-duration: 3s;
+    -vendor-animation-delay: 2s;
+    -vendor-animation-iteration-count: infinite;
 }
 
 .project-img {
@@ -859,7 +865,7 @@ footer h3 {
 
     }
 
-    .timeline {
+    .education {
         display: block;
         width: 100%;
         height: 100%;
@@ -880,11 +886,13 @@ footer h3 {
         flex-direction: column;
         flex-flow: column;
         grid-gap: 20px;
+
     }
 
     .project-card {
         height: 200px;
         width: 100%;
+        border-radius: 10px;
     }
 
     .project-content {

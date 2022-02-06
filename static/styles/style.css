@@ -554,11 +554,6 @@ i {
     border-radius: 20px;
     position: relative;
 }
-#project-section-container {
-    -vendor-animation-duration: 3s;
-    -vendor-animation-delay: 2s;
-    -vendor-animation-iteration-count: infinite;
-}
 
 .project-img {
     width: 100%;

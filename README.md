@@ -3,14 +3,14 @@ This website is created to showcase the projects
 and skills in better manner. This website is fully responsive
 This website contains the following sections.
 
-## **Website Sections**
-####Home
-####About Me
+## Website Sections
+#### Home
+#### About Me
 In this section you will see a brief description about me.
-####Project
-####Contact me
+#### Project
+#### Contact me
 
-##Technologies Used
+## Technologies Used
 <ul>
 <li>Webstorm IDE</li>
 <li>HTML</li>
@@ -21,7 +21,7 @@ In this section you will see a brief description about me.
 </ul>
 
 
-##Testing
+## Testing
 Testing was carried out on different browsers such as 
 **Chrome**, **Firefox**, **Edge**. Also, website is tested on different
 screen size devices which includes: **Mobile**, **Tablet**, **Desktop** .
@@ -31,8 +31,8 @@ screen size devices which includes: **Mobile**, **Tablet**, **Desktop** .
 <li> user input in contact form had width issue which is successfully mitigated.</li>
 </ol>
 
-####Validation Tool:
+## Validation Tool:
 **[W3 Validator](<https://validator.w3.org/>)**
 
-##Live deployment on Github
+## Live deployment on Github
 **[Portfolio](https://sahilbanait.github.io/personal-portfolio/)**

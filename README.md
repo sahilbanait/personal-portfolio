@@ -1,14 +1,22 @@
 # Personal Portfolio Website
 This website is created to showcase the projects
-and skills in better manner. This website is fully responsive
-This website contains the following sections.
+and skills in better manner. This website is fully responsive on various
+screen size mobile devices. It contains following sections: 
 
-## Website Sections
+## **Website Sections**
 #### Home
+Home section have a small circle picture and my name in **h1** elements. 
 #### About Me
-In this section you will see a brief description about me.
+In this section users will see a brief description about me.
+#### Skills
+In this section, Users can see the different skills that I have.
+#### Education
+This section includes the history my studies starting from  the highest level of education.
 #### Project
+Project section include four different cards and if user click on it.
+It will take them to the allocated GitHub repository.
 #### Contact me
+It includes a simple form with four different inputs and embedded map of my current address.
 
 ## Technologies Used
 <ul>
@@ -31,7 +39,7 @@ screen size devices which includes: **Mobile**, **Tablet**, **Desktop** .
 <li> user input in contact form had width issue which is successfully mitigated.</li>
 </ol>
 
-## Validation Tool:
+#### Validation Tool:
 **[W3 Validator](<https://validator.w3.org/>)**
 
 ## Live deployment on Github

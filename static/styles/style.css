@@ -312,6 +312,7 @@ i {
     margin: 50px auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 300px;
     grid-gap: 100px;
     color: var(--white);
 }
@@ -811,6 +812,10 @@ footer h3 {
         display: grid;
         grid-gap: 5px;
         grid-template-columns: repeat(2, 1fr);
+
+        justify-content: center;
+        margin-left: 10px;
+        margin-right: 10px;
     }
 
     .skill-card {
@@ -921,6 +926,9 @@ footer h3 {
 
     .skill-level{
         margin: 10px;
+    }
+    .skills-container{
+        justify-content: center;
     }
 
     .navbar-toggler {

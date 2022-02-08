@@ -32,9 +32,11 @@
 *, *::before, *::after {
     box-sizing: border-box;
 }
-html,body{
+
+html, body {
     overflow-x: hidden;
 }
+
 body {
     font-size: medium;
     scroll-behavior: smooth;
@@ -288,6 +290,7 @@ i {
     background-color: #e52d27;
     background-image: linear-gradient(to right, #e52d27 0%, #b31217 51%, #e52d27 100%);
 }
+
 /** About section ended **/
 
 /* Skills Section started*/
@@ -680,6 +683,7 @@ form .submit:hover {
 
 
 }
+
 /* Contact section ended */
 
 
@@ -924,10 +928,11 @@ footer h3 {
 
 @media (min-width: 768px) {
 
-    .skill-level{
+    .skill-level {
         margin: 10px;
     }
-    .skills-container{
+
+    .skills-container {
         justify-content: center;
     }
 
@@ -941,13 +946,15 @@ footer h3 {
         transition: box-shadow .15s ease-in-out;
     }
 }
+
 @media screen and (max-width: 568px) {
-    #hero-section-container{
-            display: grid;
+    #hero-section-container {
+        display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         justify-content: center;
         align-items: center;
     }
+
     .education-card {
         width: 45%;
         height: 200px;
@@ -955,14 +962,17 @@ footer h3 {
         border-radius: 10px;
         text-align: center;
     }
-     .card-header {
+
+    .card-header {
         font-size: 8px;
         margin-bottom: 0;
     }
+
     .card-body p {
         margin: 20px auto;
         font-size: 10px;
     }
+
     .contact-section {
         width: 100%;
         display: grid;

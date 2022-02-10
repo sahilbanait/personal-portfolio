@@ -181,6 +181,8 @@ i {
     width: 350px;
     align-self: center;
     border-radius: 180px;
+    transform: rotate(360turn);
+    transition: 0.5s;
 }
 
 .hero-image {

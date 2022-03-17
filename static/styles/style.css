@@ -20,6 +20,7 @@
     --project-bacground: #252525;
     --line-height: 1.7rem;
     --transition: 0.2s ease-in;
+
 }
 
 /* Resets */
@@ -181,7 +182,7 @@ i {
     width: 350px;
     align-self: center;
     border-radius: 180px;
-    transform: rotate(360turn);
+    animation: heroImage 5s infinite;
     transition: 0.5s;
 }
 
@@ -983,6 +984,10 @@ footer h3 {
         align-items: center;
         min-height: fit-content;
     }
+    .project-card .project-heading .project-content:hover {
+        opacity: 1;
+        font-size: 50px;
+    }
 
     form input, form textarea {
         width: 100%;
@@ -991,7 +996,11 @@ footer h3 {
     }
 
 }
-
+@keyframes heroImage {
+    0% {transform: rotate(0deg);}
+    50%{transform: rotate(180deg)}
+    100% {transform: rotate(360deg);}
+}
 
 
 

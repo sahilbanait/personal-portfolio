@@ -1,1 +1,11 @@
 .idea
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.env*
+!.env.example
+test-results/
+playwright-report/
+.artifacts/
+legacy/

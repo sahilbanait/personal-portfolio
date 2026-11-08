@@ -642,6 +642,16 @@ test("top bar: stays on screen, and the phone menu opens and closes", async ({
   await phone.locator("#menu summary").tap();
   await expect(link).toBeVisible();
   expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  // The menu covers the screen below the bar, and the page behind it doesn't scroll.
+  const sheet = await phone.evaluate(() => {
+    const r = document.querySelector("#menu nav")!.getBoundingClientRect();
+    return {
+      gap: innerHeight - r.bottom,
+      width: r.width - innerWidth,
+      locked: getComputedStyle(document.documentElement).overflow,
+    };
+  });
+  expect(sheet).toEqual({ gap: 0, width: 0, locked: "hidden" });
   await link.tap();
   await expect(link).toBeHidden();
   await expect.poll(() => phone.evaluate(() => scrollY)).toBeGreaterThan(100);
@@ -794,6 +804,41 @@ test("pause is remembered and has one clear state", async ({ page }) => {
   expect(running).toBe(false);
 });
 
+test("projects swipe sideways on a phone", async ({ browser }) => {
+  const ctx = await browser.newContext({
+    viewport: { width: 375, height: 812 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await ctx.newPage();
+  const errors = await open(page);
+  await toSection(page, "projects");
+  await page.waitForTimeout(900);
+  const swipe = page.locator('.swipe[data-for="grid"]');
+  const [prev, next] = [swipe.getByRole("button", { name: "Previous projects" }), swipe.getByRole("button", { name: "Next projects" })];
+  await expect(swipe.locator(".swipe-count")).toHaveText("1 / 12");
+  await expect(prev).toHaveAttribute("aria-disabled", "true");
+  // One row, not a stack: the page is barely taller than a single card.
+  const grid = await page.locator("#grid").evaluate((g) => ({
+    height: g.getBoundingClientRect().height,
+    scrolls: g.scrollWidth > g.clientWidth,
+    peek: g.children[1].getBoundingClientRect().left < innerWidth,
+  }));
+  expect(grid.scrolls).toBe(true);
+  expect(grid.peek).toBe(true);
+  expect(grid.height).toBeLessThan(500);
+  await next.tap();
+  await expect(swipe.locator(".swipe-count")).toHaveText("2 / 12");
+  await expect(prev).toHaveAttribute("aria-disabled", "false");
+  // Filtering starts the row again and counts only what's shown.
+  await page.locator("#filter").getByRole("button", { name: /^AI/ }).tap();
+  await expect(swipe.locator(".swipe-count")).toHaveText("1 / 5");
+  await expect(prev).toHaveAttribute("aria-disabled", "true");
+  expect(await overflow(page)).toBeLessThanOrEqual(0);
+  expect(errors).toEqual([]);
+  await ctx.close();
+});
+
 test("nothing clips: small screens, text spacing, and short screens", async ({
   browser,
 }) => {
@@ -801,6 +846,8 @@ test("nothing clips: small screens, text spacing, and short screens", async ({
   const offRight = (page: Page) =>
     page.evaluate(() =>
       [...document.querySelectorAll("h1 .l, h2 .w, h3, #swap")]
+        // Project cards past the edge on phones are meant to be swiped to.
+        .filter((e) => !e.closest("#grid"))
         .filter((e) => {
           const r = e.getBoundingClientRect();
           return r.width && r.right > innerWidth + 1;

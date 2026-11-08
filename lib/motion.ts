@@ -116,8 +116,9 @@ export function startMotion() {
   // Ring labels stay at least 13.5px on screen, however small the wheel gets.
   const ringSizer = new ResizeObserver(() => {
     const w = ring.getBoundingClientRect().width;
-    if (w)
-      ring.style.setProperty("--lbl", `${Math.max(25, (13.5 * 680) / w)}px`);
+    if (!w) return;
+    ring.style.setProperty("--lbl", `${Math.max(25, (13.5 * 680) / w)}px`);
+    ring.style.setProperty("--sub", `${Math.max(18, (11 * 680) / w)}px`);
   });
   ringSizer.observe(ring);
   cleanups.push(() => ringSizer.disconnect());
@@ -646,6 +647,66 @@ export function startMotion() {
     },
     on,
   );
+  /* ---------- Phone carousels ---------- */
+  // Below 681px projects scroll sideways. The buttons step one card and the count follows.
+  $$(".swipe").forEach((sw) => {
+    const track = $(sw.dataset.for!);
+    const [prev, next] = $$<HTMLButtonElement>("button", sw);
+    const [cur, total] = $$("span", sw.querySelector(".swipe-count")!);
+    const shown = () =>
+      ([...track.children] as HTMLElement[]).filter((c) => !c.hidden);
+    const step = () => {
+      const [a, b] = shown();
+      return a && b ? b.offsetLeft - a.offsetLeft : track.clientWidth;
+    };
+    const update = () => {
+      const n = shown().length;
+      const i = Math.min(n - 1, Math.round(track.scrollLeft / step()));
+      cur.textContent = String(Math.max(1, i + 1));
+      total.textContent = String(n);
+      prev.setAttribute("aria-disabled", String(track.scrollLeft < 2));
+      next.setAttribute(
+        "aria-disabled",
+        String(track.scrollLeft + track.clientWidth >= track.scrollWidth - 2),
+      );
+    };
+    let queued = false;
+    track.addEventListener(
+      "scroll",
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          update();
+        });
+      },
+      { passive: true, signal: stop.signal },
+    );
+    [prev, next].forEach((btn) =>
+      btn.addEventListener(
+        "click",
+        () => {
+          if (btn.getAttribute("aria-disabled") === "true") return;
+          track.scrollBy({
+            left: Number(btn.dataset.d) * step(),
+            behavior: reduced ? "auto" : "smooth",
+          });
+        },
+        on,
+      ),
+    );
+    // A filter change starts the row again from the first card.
+    const mo = new MutationObserver(() => {
+      track.scrollTo({ left: 0 });
+      update();
+    });
+    mo.observe(track, { subtree: true, attributeFilter: ["hidden"] });
+    cleanups.push(() => mo.disconnect());
+    addEventListener("resize", update, on);
+    update();
+  });
+
   const themeBtns = $$<HTMLButtonElement>("[data-t]");
   const markTheme = () =>
     themeBtns.forEach((b) =>

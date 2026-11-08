@@ -65,8 +65,13 @@ function Heading({ id, children }: { id: string; children: string }) {
 const NewTab = () => <span className="vh"> (opens in a new tab)</span>;
 
 const NavLinks = () =>
-  nav.map((n) => (
-    <a href={n.href} key={n.href}>
+  nav.map((n, i) => (
+    <a
+      href={n.href}
+      className={n.href === "#contact" ? "nav-cta" : undefined}
+      style={vars({ "--n": i })}
+      key={n.href}
+    >
       {n.label}
     </a>
   ));
@@ -92,6 +97,21 @@ const Section = ({
   </section>
 );
 
+// Previous and next buttons for the phone carousel. Hidden where the cards sit in a grid.
+const Swipe = ({ id, label }: { id: string; label: string }) => (
+  <div className="swipe" data-for={id}>
+    <button type="button" data-d="-1" aria-label={`Previous ${label}`}>
+      <span aria-hidden="true">‹</span>
+    </button>
+    <p className="swipe-count" aria-hidden="true">
+      <span>1</span> / <span>{projects.length}</span>
+    </p>
+    <button type="button" data-d="1" aria-label={`Next ${label}`}>
+      <span aria-hidden="true">›</span>
+    </button>
+  </div>
+);
+
 const Seal = ({ tool }: { tool: string }) => (
   <span
     className="seal"
@@ -102,6 +122,7 @@ const Seal = ({ tool }: { tool: string }) => (
 
 const issuers = new Set([...topCerts, ...restCerts].map((c) => c.o)).size;
 const certCount = topCerts.length + restCerts.length;
+const leadCert = (topCerts.find((c) => "big" in c && c.big) ?? topCerts[0]).n;
 const snowflakeCount = [...topCerts, ...restCerts].filter(
   (c) => c.o === "Snowflake",
 ).length;
@@ -139,18 +160,19 @@ export default function Home() {
           <nav className="bar-links" aria-label="Main">
             <NavLinks />
           </nav>
-          <details className="bar-menu" id="menu">
-            <summary>Menu</summary>
-            <nav aria-label="Main">
-              <NavLinks />
-            </nav>
-          </details>
           <div className="ctl" role="group" aria-label="Display options">
             <button data-t="bold" type="button" aria-pressed="true">
-              Colour
+              <svg className="t-ic" viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.5" />
+                <path d="M8 1.5a6.5 6.5 0 0 1 0 13z" />
+              </svg>
+              <span className="t-lbl">Colour</span>
             </button>
             <button data-t="dark" type="button" aria-pressed="false">
-              Dark
+              <svg className="t-ic" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M13.5 10.2A6 6 0 0 1 5.8 2.5a6 6 0 1 0 7.7 7.7z" />
+              </svg>
+              <span className="t-lbl">Dark</span>
             </button>
             <span className="sep" />
             <button id="pause" type="button" aria-label="Pause animations">
@@ -162,6 +184,15 @@ export default function Home() {
               </svg>
             </button>
           </div>
+          <details className="bar-menu" id="menu">
+            <summary>
+              <span className="burger" aria-hidden="true" />
+              Menu
+            </summary>
+            <nav aria-label="Main">
+              <NavLinks />
+            </nav>
+          </details>
         </div>
       </header>
 
@@ -227,6 +258,15 @@ export default function Home() {
                 )}
               </div>
             </div>
+            <ul className="facts fadein" style={vars({ "--n": 3 })}>
+              <li>
+                <b>{projects.length}</b> projects
+              </li>
+              <li>
+                <b>{certCount}</b> certifications
+              </li>
+              <li>{leadCert}</li>
+            </ul>
           </div>
           {marquee.map((row, r) => (
             <div
@@ -437,6 +477,7 @@ export default function Home() {
               </article>
             ))}
           </div>
+          <Swipe id="grid" label="projects" />
         </Section>
 
         <Section id="certifications" title="Certifications">
@@ -571,7 +612,12 @@ export default function Home() {
       </main>
 
       <footer className="wrap">
-        {profile.name}, {profile.title}
+        <p>
+          {profile.name}, {profile.title}, {profile.location}
+        </p>
+        <a className="to-top" href="#home">
+          Back to top <span aria-hidden="true">↑</span>
+        </a>
       </footer>
 
       <SiteMotion />

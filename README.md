@@ -34,6 +34,7 @@ Original assets are kept locally in `legacy/static/`, which git ignores. Don't r
 - `prefers-reduced-motion` gives a complete, still page.
 - The pause button in the top bar stops all looping motion and is remembered between visits. Loops also stop when they're off screen.
 - Below 1000px the wheel stacks above its text. Screens under 620px tall (521px on phones) get a plain list instead.
+- Below 681px projects and hobbies scroll sideways one card at a time, with previous and next buttons, and the menu opens as a full-screen sheet.
 
 ## Checks
 

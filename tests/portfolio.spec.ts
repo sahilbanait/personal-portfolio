@@ -804,7 +804,7 @@ test("pause is remembered and has one clear state", async ({ page }) => {
   expect(running).toBe(false);
 });
 
-test("projects and hobbies swipe sideways on a phone", async ({ browser }) => {
+test("projects swipe sideways on a phone", async ({ browser }) => {
   const ctx = await browser.newContext({
     viewport: { width: 375, height: 812 },
     hasTouch: true,
@@ -834,9 +834,6 @@ test("projects and hobbies swipe sideways on a phone", async ({ browser }) => {
   await page.locator("#filter").getByRole("button", { name: /^AI/ }).tap();
   await expect(swipe.locator(".swipe-count")).toHaveText("1 / 5");
   await expect(prev).toHaveAttribute("aria-disabled", "true");
-  await expect(
-    page.locator('.swipe[data-for="lifeGrid"] .swipe-count'),
-  ).toHaveText("1 / 3");
   expect(await overflow(page)).toBeLessThanOrEqual(0);
   expect(errors).toEqual([]);
   await ctx.close();
@@ -849,6 +846,8 @@ test("nothing clips: small screens, text spacing, and short screens", async ({
   const offRight = (page: Page) =>
     page.evaluate(() =>
       [...document.querySelectorAll("h1 .l, h2 .w, h3, #swap")]
+        // Project cards past the edge on phones are meant to be swiped to.
+        .filter((e) => !e.closest("#grid"))
         .filter((e) => {
           const r = e.getBoundingClientRect();
           return r.width && r.right > innerWidth + 1;

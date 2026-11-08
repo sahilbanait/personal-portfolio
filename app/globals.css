@@ -391,13 +391,20 @@ footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
   .sphere{width:min(100%,340px)}
   /* projects and hobbies swipe sideways instead of stacking */
   .filter{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:-12px -20px 10px;padding:12px 20px}
-  .filter::-webkit-scrollbar,.grid::-webkit-scrollbar,.life::-webkit-scrollbar{display:none}
+  .filter::-webkit-scrollbar,.grid::-webkit-scrollbar{display:none}
   .filter button{flex:none}
-  .grid,.life{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:min(340px,max(303px,calc(100vw - 72px)));gap:12px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:20px;scrollbar-width:none;margin:-12px -20px 0;padding:12px 20px}
-  .grid>.card,.life>.card{scroll-snap-align:start}
+  .grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:min(340px,max(min(312px,calc(100vw - 32px)),calc(100vw - 72px)));gap:12px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:20px;scrollbar-width:none;margin:-12px -20px 0;padding:12px 20px}
+  .grid>.card{scroll-snap-align:start}
   /* Cards beside the first one are already shown, so the peek reads as more to swipe. */
-  .js .grid>.card.up:not(.in),.js .life>.card.up:not(.in){opacity:1;transform:none}
-  .js .grid>.card.up:not(.in) .vis,.js .life>.card.up:not(.in) .vis{clip-path:none}
+  .js .grid>.card.up:not(.in){opacity:1;transform:none}
+  .js .grid>.card.up:not(.in) .vis{clip-path:none}
+  /* hobbies: picture beside the text, so three cards take little room */
+  .life{gap:12px}
+  .life .card{flex-direction:row}
+  .life .vis{flex:none;width:38%;height:auto;min-height:112px}
+  .life .cb{padding:14px 16px;justify-content:center}
+  .life .cb h3{font-size:20px}
+  .life .cb p{font-size:15px}
   .vis{height:140px}
   .swipe{display:flex}
   .cert-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}

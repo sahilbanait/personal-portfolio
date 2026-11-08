@@ -648,7 +648,7 @@ export function startMotion() {
     on,
   );
   /* ---------- Phone carousels ---------- */
-  // Below 681px projects and hobbies scroll sideways. The buttons step one card and the count follows.
+  // Below 681px projects scroll sideways. The buttons step one card and the count follows.
   $$(".swipe").forEach((sw) => {
     const track = $(sw.dataset.for!);
     const [prev, next] = $$<HTMLButtonElement>("button", sw);

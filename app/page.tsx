@@ -97,14 +97,14 @@ const Section = ({
   </section>
 );
 
-// Previous and next buttons for the phone carousels. Hidden where the cards sit in a grid.
+// Previous and next buttons for the phone carousel. Hidden where the cards sit in a grid.
 const Swipe = ({ id, label }: { id: string; label: string }) => (
   <div className="swipe" data-for={id}>
     <button type="button" data-d="-1" aria-label={`Previous ${label}`}>
       <span aria-hidden="true">‹</span>
     </button>
     <p className="swipe-count" aria-hidden="true">
-      <span>1</span> / <span>{id === "grid" ? projects.length : hobbies.length}</span>
+      <span>1</span> / <span>{projects.length}</span>
     </p>
     <button type="button" data-d="1" aria-label={`Next ${label}`}>
       <span aria-hidden="true">›</span>
@@ -553,7 +553,7 @@ export default function Home() {
         </Section>
 
         <Section id="life" title="Outside work" minor>
-          <div className="life" id="lifeGrid">
+          <div className="life">
             {hobbies.map((h, i) => (
               <article className="card up" style={vars({ "--i": i })} key={h.n}>
                 <div
@@ -567,7 +567,6 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <Swipe id="lifeGrid" label="hobbies" />
         </Section>
 
         <Section id="background" title="Background" minor>

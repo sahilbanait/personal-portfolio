@@ -134,7 +134,7 @@ h2 .w>span{display:inline-block}
 .wheel-ctl button[aria-disabled=true]{opacity:.35;cursor:default}
 .wheel-note{min-width:0;min-height:44px;display:grid;align-items:center;justify-items:center;text-align:center;font-weight:700;font-size:16px;line-height:1.15}
 .wheel-note>*{grid-area:1/1;transition:opacity .3s}
-.wheel-hint{display:flex;align-items:center;gap:9px;background:var(--accent);color:var(--bg);padding:8px 16px;border-radius:999px}
+.wheel-hint{display:flex;align-items:center;gap:9px;background:var(--accent);color:var(--bg);padding:8px 16px;border-radius:20px;text-align:center}
 .loop.ai-on .wheel-hint{color:var(--lime)}
 .wheel-count{opacity:0;font:600 15px var(--body)}
 .moved .wheel-hint{opacity:0;pointer-events:none}
@@ -143,7 +143,7 @@ h2 .w>span{display:inline-block}
 .mouse::after{content:"";position:absolute;left:50%;top:4px;width:3px;height:6px;margin-left:-1.5px;border-radius:2px;background:currentColor;animation:wheeldown 1.5s var(--ease) infinite}
 @keyframes wheeldown{0%{transform:translateY(0);opacity:1}80%,100%{transform:translateY(9px);opacity:0}}
 .h-touch{display:none}
-@media (pointer:coarse){.h-mouse{display:none}.h-touch{display:inline}}
+@media (pointer:coarse){.h-mouse,.mouse{display:none}.h-touch{display:inline}}
 /* a plain list unless the pinned wheel above applies */
 .loop-grid{display:none}
 .loop{padding-block:clamp(64px,10vh,120px)}
@@ -173,7 +173,7 @@ h2 .w>span{display:inline-block}
   .js .pin .lede{display:none}
   .loop-grid{grid-template-columns:minmax(0,1fr);gap:6px;align-content:start;flex:1}
   .ring-col{order:-1}
-  .ring-box{width:min(86vw,39svh)}
+  .ring-box{width:min(calc(100vw - 96px),39svh)}
   .stops{display:none}
   .stage-panel{min-height:0}
   .stage-word{font-size:min(14.5vw,92px);margin-top:0}
@@ -451,3 +451,24 @@ html:not(.js) .sk-detail{grid-template-rows:1fr;visibility:visible}
 html:not(.js) .sk-btn{opacity:1;cursor:default}
 
 .paused .bar-menu[open] nav a,.paused .facts{animation:none}
+/* foldable cover screens and other very narrow phones */
+@media (max-width:359px){
+  .cert-stats{grid-template-columns:minmax(0,1fr);gap:0}
+  .cert-stats li{flex-direction:row;align-items:baseline;gap:10px}
+  .cert-stats b{font-size:46px}
+}
+@media (max-width:319px){
+  .wrap{padding-inline:16px}
+  .marquee,.big-mq{margin-inline:-16px}
+  .grid,.filter{margin-inline:-16px;padding-inline:16px;scroll-padding-inline:16px}
+  .bar-menu nav{padding-inline:16px}
+  .ctl .sep{display:none}
+  .minor h2{font-size:clamp(36px,13vw,44px)}
+  .bar-menu summary{width:44px;padding:0;justify-content:center}
+  .menu-lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+}
+/* tall, narrow phones: centre the wheel and its text in the spare height, with room for the longest stage so nothing jumps */
+@media (max-width:599px) and (min-height:700px) and (prefers-reduced-motion:no-preference){
+  .js .loop-grid{align-content:center}
+  .js .stage-panel{min-height:180px}
+}

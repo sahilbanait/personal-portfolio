@@ -854,7 +854,8 @@ test("nothing clips: small screens, text spacing, and short screens", async ({
         })
         .map((e) => e.textContent),
     );
-  for (const width of [320, 340, 375, 1200, 1440]) {
+  // 280 is a foldable phone's cover screen.
+  for (const width of [280, 320, 340, 375, 1200, 1440]) {
     const ctx = await browser.newContext({ viewport: { width, height: 800 } });
     const page = await ctx.newPage();
     await open(page);
@@ -885,6 +886,8 @@ test("nothing clips: small screens, text spacing, and short screens", async ({
     await ctx.close();
   }
   for (const [width, height] of [
+    [280, 653],
+    [344, 882],
     [320, 568],
     [360, 640],
     [375, 667],

@@ -187,7 +187,7 @@ export default function Home() {
           <details className="bar-menu" id="menu">
             <summary>
               <span className="burger" aria-hidden="true" />
-              Menu
+              <span className="menu-lbl">Menu</span>
             </summary>
             <nav aria-label="Main">
               <NavLinks />

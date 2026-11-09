@@ -122,6 +122,7 @@ const Seal = ({ tool }: { tool: string }) => (
 
 const issuers = new Set([...topCerts, ...restCerts].map((c) => c.o)).size;
 const certCount = topCerts.length + restCerts.length;
+const year = new Date().getFullYear();
 const leadCert = (topCerts.find((c) => "big" in c && c.big) ?? topCerts[0]).n;
 const snowflakeCount = [...topCerts, ...restCerts].filter(
   (c) => c.o === "Snowflake",
@@ -150,7 +151,6 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: spriteMarkup }}
       />
       <div id="progress" aria-hidden="true" />
-      <div id="glow" aria-hidden="true" />
 
       <header className="bar" id="bar">
         <div className="bar-in wrap">
@@ -244,14 +244,14 @@ export default function Home() {
                 </span>
               </p>
               <div className="btns fadein" style={vars({ "--n": 2 })}>
-                <a className="btn main magnet" href="#projects">
+                <a className="btn main" href="#projects">
                   See projects
                 </a>
-                <a className="btn magnet" href="#contact">
+                <a className="btn" href="#contact">
                   Contact
                 </a>
                 {links.resume && (
-                  <a className="btn magnet" href={links.resume} {...external}>
+                  <a className="btn" href={links.resume} {...external}>
                     Résumé
                     <NewTab />
                   </a>
@@ -525,7 +525,7 @@ export default function Home() {
             ))}
           </ul>
           <a
-            className="cert-link magnet"
+            className="cert-link"
             href={links.certifications}
             {...external}
           >
@@ -535,21 +535,28 @@ export default function Home() {
         </Section>
 
         <Section id="toolkit" title="Toolkit" minor>
-          {toolkit.map(([group, tools]) => (
-            <div className="tool-row" key={group}>
-              <h3>{group}</h3>
-              <ul>
-                {tools.map((t, i) => (
-                  <Tool
-                    name={t}
-                    className="tile up"
-                    style={vars({ "--i": i })}
-                    key={t}
-                  />
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div className="stack">
+            {toolkit.map(([group, tools], g) => (
+              <div
+                className={tools.length > 5 ? "stack-group up wide" : "stack-group up"}
+                style={vars({ "--i": g })}
+                key={group}
+              >
+                <h3>
+                  {group}
+                  <span aria-hidden="true">{tools.length}</span>
+                </h3>
+                <ul>
+                  {tools.map((t) => (
+                    <li key={t}>
+                      <ToolIcon name={t} />
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </Section>
 
         <Section id="life" title="Outside work" minor>
@@ -572,10 +579,16 @@ export default function Home() {
         <Section id="background" title="Background" minor>
           <ul className="bg-list">
             {background.map((b, i) => (
-              <li className="up" style={vars({ "--i": i })} key={b.t}>
-                <span>{b.d}</span>
-                <b>{b.t}</b>
-                <span className="r">{b.w}</span>
+              <li
+                className={i === 0 ? "up now" : "up"}
+                style={vars({ "--i": i })}
+                key={b.t}
+              >
+                <span className="tl-date">{b.d}</span>
+                <div className="tl-body">
+                  <b>{b.t}</b>
+                  <span>{b.w}</span>
+                </div>
               </li>
             ))}
           </ul>
@@ -594,16 +607,16 @@ export default function Home() {
             <div>Let’s talk data</div>
           </div>
           <div className="big-links">
-            <a className="magnet" href={links.linkedin} {...external}>
+            <a href={links.linkedin} {...external}>
               LinkedIn <span aria-hidden="true">↗</span>
               <NewTab />
             </a>
-            <a className="magnet" href={links.github} {...external}>
+            <a href={links.github} {...external}>
               GitHub <span aria-hidden="true">↗</span>
               <NewTab />
             </a>
             {links.email && (
-              <a className="magnet" href={`mailto:${links.email}`}>
+              <a href={`mailto:${links.email}`}>
                 Email
               </a>
             )}
@@ -612,12 +625,21 @@ export default function Home() {
       </main>
 
       <footer className="wrap">
-        <p>
-          {profile.name}, {profile.title}, {profile.location}
-        </p>
-        <a className="to-top" href="#home">
-          Back to top <span aria-hidden="true">↑</span>
-        </a>
+        <div className="foot-id">
+          <b>{profile.name}</b>
+          <span>
+            {profile.title}, {profile.location}
+          </span>
+        </div>
+        <nav className="foot-nav" aria-label="Footer">
+          <NavLinks />
+        </nav>
+        <div className="foot-end">
+          <a className="to-top" href="#home">
+            Back to top <span aria-hidden="true">↑</span>
+          </a>
+          <span>© {year}</span>
+        </div>
       </footer>
 
       <SiteMotion />

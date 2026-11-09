@@ -1050,40 +1050,11 @@ export function startMotion() {
       on,
     );
   });
-  $$(".magnet").forEach((m) => {
-    m.addEventListener(
-      "pointermove",
-      (e) => {
-        if (e.pointerType !== "mouse") return;
-        const b = m.getBoundingClientRect();
-        m.style.setProperty(
-          "--mx",
-          `${(e.clientX - b.left - b.width / 2) * 0.25}px`,
-        );
-        m.style.setProperty(
-          "--my",
-          `${(e.clientY - b.top - b.height / 2) * 0.35}px`,
-        );
-      },
-      on,
-    );
-    m.addEventListener(
-      "pointerleave",
-      () => {
-        m.style.setProperty("--mx", "0px");
-        m.style.setProperty("--my", "0px");
-      },
-      on,
-    );
-  });
-  const glow = $("glow");
   const wires = $("wires");
   addEventListener(
     "pointermove",
     (e) => {
       if (e.pointerType !== "mouse") return;
-      glow.style.opacity = "1";
-      glow.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
       wires.style.transform = `translate(${(e.clientX / innerWidth - 0.5) * -22}px,${(e.clientY / innerHeight - 0.5) * -22}px) scale(1.04)`;
     },
     { passive: true, signal: stop.signal },

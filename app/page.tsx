@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { SiteMotion } from "@/components/site-motion";
-import { icons } from "@/data/icons";
+import { Tool, ToolIcon } from "@/components/tool";
 import {
   aiSkills,
   background,
@@ -16,7 +16,6 @@ import {
 import { projectGroups, projects } from "@/data/projects";
 import {
   art,
-  iconId,
   ringMarkup,
   scene,
   sealMarkup,
@@ -25,30 +24,6 @@ import {
 
 const vars = (v: Record<string, number>) => v as CSSProperties;
 const external = { target: "_blank", rel: "noopener noreferrer" };
-
-function ToolIcon({ name }: { name: string }) {
-  return icons[name] ? (
-    <svg className="ic" aria-hidden="true">
-      <use href={`#${iconId(name)}`} />
-    </svg>
-  ) : (
-    <span className="dot-ic" aria-hidden="true" />
-  );
-}
-
-const Tool = ({
-  name,
-  ...rest
-}: {
-  name: string;
-  className?: string;
-  style?: CSSProperties;
-}) => (
-  <li {...rest}>
-    <ToolIcon name={name} />
-    {name}
-  </li>
-);
 
 function Heading({ id, children }: { id: string; children: string }) {
   return (

@@ -1,10 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { marquee, profile } from "@/data/profile";
+import { profile } from "@/data/profile";
 
 const MAX_POINTS = 5200;
-const LANES = marquee[0].slice(0, 9);
+// The streams that feed the name: data management disciplines the site already backs up
+// (the Govern and Observe stages, the Informatica governance and catalog certifications, dbt, Airflow, Snowflake).
+const LANES = [
+  "Data integration",
+  "Data governance",
+  "Data catalog",
+  "Metadata and lineage",
+  "Data quality",
+  "Data modelling",
+  "Orchestration",
+  "Observability",
+  "Warehousing",
+];
 
 // Records stream in along tool-named lanes, peel off at their column and settle into the name.
 export function DataHero() {
@@ -34,13 +46,14 @@ export function DataHero() {
     let ema = 0;
     let lastReport = 0;
     const ptr = { x: -9999, y: -9999 };
-    let colors = { fg: "#fff7e0", flow: "#a893ff", accent: "#d7ff3e" };
+    let colors = { fg: "#fff7e0", flow: "#a893ff", accent: "#d7ff3e", bg: "#4b25e6" };
     const readColors = () => {
       const cs = getComputedStyle(box);
       colors = {
         fg: cs.getPropertyValue("--fg").trim() || colors.fg,
         flow: cs.getPropertyValue("--ctl-line").trim() || colors.flow,
         accent: cs.getPropertyValue("--accent").trim() || colors.accent,
+        bg: cs.getPropertyValue("--bg").trim() || colors.bg,
       };
     };
 
@@ -154,7 +167,7 @@ export function DataHero() {
     const draw = (now: number) => {
       ctx.clearRect(0, 0, W, H);
       const el2 = now - t0;
-      // Lanes and their tool names fade once the name has formed.
+      // Lanes and their names fade once the name has formed.
       const laneAlpha = reduced ? 0 : Math.max(0, 1 - Math.max(0, el2 - 3200) / 1400);
       if (laneAlpha > 0) {
         ctx.globalAlpha = 0.28 * laneAlpha;
@@ -168,11 +181,6 @@ export function DataHero() {
           ctx.stroke();
         });
         ctx.setLineDash([]);
-        ctx.globalAlpha = 0.75 * laneAlpha;
-        ctx.fillStyle = colors.fg;
-        ctx.font = `600 11px ${getComputedStyle(root).getPropertyValue("--font-body") || "sans-serif"}`;
-        ctx.textBaseline = "bottom";
-        LANES.forEach((t, i) => ctx.fillText(t, bandX + 8, laneY[i] - 4));
         ctx.globalAlpha = laneAlpha;
         ctx.fillStyle = colors.accent;
         ctx.fillRect(bandX - 1.5, H * 0.08, 3, H * 0.84);
@@ -183,6 +191,24 @@ export function DataHero() {
       for (let i = 0; i < n; i++) if (state[i] === 0 && el2 >= delay[i]) ctx.fillRect(x[i], y[i], sz, sz);
       ctx.fillStyle = colors.fg;
       for (let i = 0; i < n; i++) if (state[i] !== 0) ctx.fillRect(x[i], y[i], sz, sz);
+      // Lane names sit on small pills above the points, so they stay readable while the name forms.
+      if (laneAlpha > 0) {
+        ctx.font = `600 12px ${getComputedStyle(root).getPropertyValue("--font-body") || "sans-serif"}`;
+        ctx.textBaseline = "middle";
+        LANES.forEach((t, i) => {
+          const w = ctx.measureText(t).width + 14;
+          const ly = laneY[i] - 11;
+          ctx.globalAlpha = 0.9 * laneAlpha;
+          ctx.fillStyle = colors.bg;
+          ctx.beginPath();
+          ctx.roundRect(bandX + 6, ly - 10, w, 20, 10);
+          ctx.fill();
+          ctx.globalAlpha = laneAlpha;
+          ctx.fillStyle = colors.fg;
+          ctx.fillText(t, bandX + 13, ly + 0.5);
+        });
+        ctx.globalAlpha = 1;
+      }
     };
 
     const frame = (now: number) => {

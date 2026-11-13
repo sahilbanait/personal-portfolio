@@ -1,5 +1,8 @@
 import { aiSkills, stages } from "@/data/profile";
+import { projects } from "@/data/projects";
 import { iconHtml, RING } from "@/lib/art";
+import { startDataHero } from "@/lib/data-hero";
+import { ROLES, toolRole } from "@/lib/roles";
 
 const $ = <T extends Element = HTMLElement>(id: string) =>
   document.getElementById(id) as unknown as T;
@@ -351,11 +354,9 @@ export function startMotion() {
       a.currentTime = 0;
       if (c.classList.contains("live") && !isPaused() && !c.hidden) a.play();
     });
-  // Built the first time a card comes on screen, so loading the page stays light.
-  const buildScene = (c: Element) => {
-    if (reduced || sceneAnims.has(c) || !gridCards.includes(c as HTMLElement))
-      return;
-    const anims = $$<SVGElement>("[data-a]", c).map((el) => {
+  // Each part of a picture arrives on its own looping timeline.
+  const animateScene = (root: Element) =>
+    $$<SVGElement>("[data-a]", root).map((el) => {
       const [t, ...r] = el.dataset.a!.split(" ");
       if (t === "draw") {
         el.setAttribute("pathLength", "1");
@@ -370,7 +371,11 @@ export function startMotion() {
       a.pause();
       return a;
     });
-    sceneAnims.set(c, anims);
+  // Built the first time a card comes on screen, so loading the page stays light.
+  const buildScene = (c: Element) => {
+    if (reduced || sceneAnims.has(c) || !gridCards.includes(c as HTMLElement))
+      return;
+    sceneAnims.set(c, animateScene(c));
   };
   if (!reduced)
     gridCards.forEach((c) =>
@@ -644,6 +649,7 @@ export function startMotion() {
           off || !c.classList.contains("live") ? a.pause() : a.play(),
         ),
       );
+      caseAnims.forEach((a) => (off ? a.pause() : a.play()));
     },
     on,
   );
@@ -747,6 +753,132 @@ export function startMotion() {
     ),
   );
 
+  /* ---------- Project case studies ---------- */
+  // A card opens into a full view: its picture grows out of the card, then the stack by role.
+  const caseDlg = $<HTMLDialogElement>("case");
+  const caseVis = $("caseVis");
+  let caseAnims: Animation[] = [];
+  let caseCard: HTMLElement | null = null;
+  const esc = (t: string) =>
+    t.replace(/[&<>"]/g, (ch) => `&#${ch.charCodeAt(0)};`);
+  const shownCards = () => gridCards.filter((c) => !c.hidden);
+  const fillCase = (card: HTMLElement) => {
+    const p = projects[Number(card.dataset.i)];
+    caseCard = card;
+    caseDlg.dataset.cat = p.groups[0].toLowerCase();
+    $("caseCats").textContent = p.groups.join(" · ");
+    $("caseStatus").textContent = p.inProgress
+      ? "In progress"
+      : p.url
+        ? `Live on ${p.urlLabel}`
+        : "Private repo";
+    $("caseTitle").textContent = p.name;
+    $("caseLine").textContent = p.line;
+    $("caseArch").innerHTML = ROLES.map((r) => [r, p.tools.filter((t) => toolRole(t) === r)] as const)
+      .filter(([, ts]) => ts.length)
+      .map(
+        ([r, ts]) =>
+          `<li><span class="case-role">${r}</span><ul>${ts.map((t) => `<li>${iconHtml(t)}${esc(t)}</li>`).join("")}</ul></li>`,
+      )
+      .join("");
+    const link = $<HTMLAnchorElement>("caseLink");
+    link.hidden = !p.url;
+    if (p.url) {
+      link.href = p.url;
+      link.firstChild!.textContent = `View on ${p.urlLabel} ↗`;
+    }
+    const list = shownCards();
+    const at = list.indexOf(card);
+    const name = (c: HTMLElement) => projects[Number(c.dataset.i)].name;
+    $("casePrev").textContent = `‹ ${name(list[(at - 1 + list.length) % list.length])}`;
+    $("caseNext").textContent = `${name(list[(at + 1) % list.length])} ›`;
+    caseAnims.forEach((a) => a.cancel());
+    caseVis.innerHTML = card.querySelector(".vis")!.innerHTML;
+    caseAnims = reduced ? [] : animateScene(caseVis);
+    caseAnims.forEach((a) => (isPaused() ? a.pause() : a.play()));
+  };
+  // Runs a change as a view transition when the browser has them and motion is on.
+  const viewChange = (update: () => void, done?: () => void) => {
+    if (!document.startViewTransition || reduced) {
+      update();
+      done?.();
+      return;
+    }
+    root.classList.add("vt-case");
+    const t = document.startViewTransition(update);
+    // A quick second click skips the first transition. That's expected, not an error.
+    t.ready.catch(() => {});
+    t.finished.finally(() => {
+      root.classList.remove("vt-case");
+      done?.();
+    });
+  };
+  const visOf = (c: HTMLElement | null) => c?.querySelector<HTMLElement>(".vis");
+  const openCase = (card: HTMLElement) => {
+    const v = visOf(card)!;
+    v.style.viewTransitionName = "case-vis";
+    viewChange(
+      () => {
+        v.style.viewTransitionName = "";
+        fillCase(card);
+        caseVis.style.viewTransitionName = "case-vis";
+        if (!caseDlg.open) caseDlg.showModal();
+      },
+      () => (caseVis.style.viewTransitionName = ""),
+    );
+  };
+  const closeCase = () => {
+    if (!caseDlg.open) return;
+    const card = caseCard;
+    card?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    caseVis.style.viewTransitionName = "case-vis";
+    viewChange(
+      () => {
+        caseVis.style.viewTransitionName = "";
+        caseDlg.close();
+        caseAnims.forEach((a) => a.cancel());
+        caseAnims = [];
+        const v = visOf(card);
+        if (v) v.style.viewTransitionName = "case-vis";
+      },
+      () => {
+        const v = visOf(card);
+        if (v) v.style.viewTransitionName = "";
+      },
+    );
+    card?.querySelector<HTMLElement>(".card-open")?.focus({ preventScroll: true });
+  };
+  const stepCase = (d: number) => {
+    const list = shownCards();
+    if (!caseCard || !list.length) return;
+    const at = list.indexOf(caseCard);
+    const next = list[(at + d + list.length) % list.length];
+    viewChange(() => fillCase(next));
+  };
+  $$<HTMLButtonElement>(".card-open").forEach((b) =>
+    b.addEventListener("click", () => openCase(b.closest<HTMLElement>(".card")!), on),
+  );
+  $("caseClose").addEventListener("click", closeCase, on);
+  $("casePrev").addEventListener("click", () => stepCase(-1), on);
+  $("caseNext").addEventListener("click", () => stepCase(1), on);
+  caseDlg.addEventListener(
+    "cancel",
+    (e) => {
+      e.preventDefault();
+      closeCase();
+    },
+    on,
+  );
+  // A click on the dimmed backdrop closes the view.
+  caseDlg.addEventListener(
+    "click",
+    (e) => {
+      if (e.target === caseDlg) closeCase();
+    },
+    on,
+  );
+  cleanups.push(() => caseAnims.forEach((a) => a.cancel()));
+
   const finish = () => {
     running = false;
     stop.abort();
@@ -758,6 +890,8 @@ export function startMotion() {
   }
 
   /* ---------- Everything below only runs with motion allowed ---------- */
+
+  cleanups.push(startDataHero($("home"), isPaused));
 
   // Counts run up once.
   observe(

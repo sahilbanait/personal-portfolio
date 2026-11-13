@@ -19,6 +19,7 @@ function transition(update: () => void) {
   if (!document.startViewTransition || reduced) return update();
   root.classList.add("vt-case");
   const t = document.startViewTransition(update);
+  t.ready.catch(() => {});
   t.finished.finally(() => root.classList.remove("vt-case"));
 }
 

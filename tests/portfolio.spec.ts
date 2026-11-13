@@ -707,22 +707,43 @@ test("screen readers get all eight stages, without live updates", async ({
   await expect(page.locator("#lifecycle [aria-live]")).toHaveCount(0);
 });
 
-test("whole linked card is the link, and filtering is announced", async ({
+test("whole card opens its case study, repo links stay on the card, and filtering is announced", async ({
   page,
   context,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await open(page);
+  const errors = await open(page);
   await toSection(page, "projects");
   await page.waitForTimeout(1200);
-  await expect(page.locator("a.card-link")).toHaveCount(3);
-  const opened = context.waitForEvent("page");
-  const box = (await page.locator("#grid .card").first().boundingBox())!;
+  // The three public repos keep a direct link on their card.
+  await expect(page.locator("#grid a.status")).toHaveCount(3);
   await context.route("https://github.com/**", (r) => r.fulfill({ body: "ok" }));
+  const box = (await page.locator("#grid .card").first().boundingBox())!;
   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  const dialog = page.getByRole("dialog", { name: "Snowflake Cost Analyzer" });
+  await expect(dialog).toBeVisible();
+  await expect(page.locator("#caseArch")).toContainText("Streamlit");
+  const opened = context.waitForEvent("page");
+  await page.locator("#caseLink").click();
   const next = await opened;
   expect(next.url()).toContain("Snowflake-Cost-Analyzer");
   await next.close();
+  // Next steps through the projects; a private one has no repo link.
+  await page.locator("#caseNext").click();
+  await expect(page.locator("#caseTitle")).toHaveText("Kafka to Snowflake pipeline");
+  await page.locator("#caseNext").click();
+  await expect(page.locator("#caseTitle")).toHaveText("Kumo");
+  await expect(page.locator("#caseLink")).toBeHidden();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(page.locator("#case")).not.toHaveAttribute("open");
+  // The repo link on a card goes straight to the repo.
+  const direct = context.waitForEvent("page");
+  await page.locator("#grid a.status").nth(1).click();
+  const repo = await direct;
+  expect(repo.url()).toContain("snowflake-kafka");
+  await repo.close();
+  expect(errors).toEqual([]);
   // Nothing clickable lies over an unlinked card.
   const third = page.locator("#grid .card").nth(2);
   await expect(third.locator("a")).toHaveCount(0);
@@ -932,6 +953,61 @@ test("nothing clips: small screens, text spacing, and short screens", async ({
       expect(fit.cut, `${width}x${height} stage ${i + 1} cut`).toBeLessThanOrEqual(1);
       expect(fit.under, `${width}x${height} stage ${i + 1} under bar`).toBeLessThanOrEqual(1);
     }
+    await ctx.close();
+  }
+});
+
+test("living data hero draws the name, and the real name stays for everyone else", async ({
+  browser,
+}) => {
+  // With motion: points draw the name over the real <h1>, which stays in the page.
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const errors = await open(page);
+  await expect(page.locator("#home")).toHaveClass(/dh-on/);
+  await expect(page.locator("#home canvas.dh-canvas")).toHaveCount(1);
+  await expect(page.getByRole("heading", { level: 1, name: "Sahil Kumar" })).toHaveCount(1);
+  // The streams fade once the name has formed, and the canvas is not empty.
+  await expect(page.locator("#home")).not.toHaveClass(/dh-stream/, { timeout: 8000 });
+  const inked = await page.locator("#home canvas.dh-canvas").evaluate((c) => {
+    const cv = c as HTMLCanvasElement;
+    const d = cv.getContext("2d")!.getImageData(0, 0, cv.width, cv.height).data;
+    let n = 0;
+    for (let i = 3; i < d.length; i += 4 * 97) if (d[i]) n++;
+    return n;
+  });
+  expect(inked).toBeGreaterThan(50);
+  expect(errors).toEqual([]);
+  await ctx.close();
+
+  // Reduced motion: no particles, just the name.
+  const still = await browser.newContext({
+    viewport: { width: 375, height: 812 },
+    reducedMotion: "reduce",
+  });
+  const p2 = await still.newPage();
+  await open(p2);
+  await expect(p2.locator("#home canvas")).toHaveCount(0);
+  expect(await p2.locator("h1").evaluate((h) => getComputedStyle(h).opacity)).toBe("1");
+  await still.close();
+});
+
+test("case study view passes axe in both themes", async ({ browser }) => {
+  for (const theme of ["bold", "dark"] as const) {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await ctx.newPage();
+    await open(page, theme);
+    await page.addStyleTag({
+      content: "*,*::before,*::after{transition:none!important;animation:none!important}",
+    });
+    await toSection(page, "projects");
+    await page.locator(".card-open").first().click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    const r = await new AxeBuilder({ page })
+      .include("#case")
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    expect(r.violations.map((v) => `${theme}: ${v.id} ${v.nodes.map((n) => n.target).join(" | ")}`)).toEqual([]);
     await ctx.close();
   }
 });

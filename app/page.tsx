@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { SiteMotion } from "@/components/site-motion";
-import { icons } from "@/data/icons";
+import { Tool, ToolIcon } from "@/components/tool";
 import {
   aiSkills,
   background,
@@ -16,7 +16,6 @@ import {
 import { projectGroups, projects } from "@/data/projects";
 import {
   art,
-  iconId,
   ringMarkup,
   scene,
   sealMarkup,
@@ -25,30 +24,6 @@ import {
 
 const vars = (v: Record<string, number>) => v as CSSProperties;
 const external = { target: "_blank", rel: "noopener noreferrer" };
-
-function ToolIcon({ name }: { name: string }) {
-  return icons[name] ? (
-    <svg className="ic" aria-hidden="true">
-      <use href={`#${iconId(name)}`} />
-    </svg>
-  ) : (
-    <span className="dot-ic" aria-hidden="true" />
-  );
-}
-
-const Tool = ({
-  name,
-  ...rest
-}: {
-  name: string;
-  className?: string;
-  style?: CSSProperties;
-}) => (
-  <li {...rest}>
-    <ToolIcon name={name} />
-    {name}
-  </li>
-);
 
 function Heading({ id, children }: { id: string; children: string }) {
   return (
@@ -438,16 +413,22 @@ export default function Home() {
           <div className="grid" id="grid">
             {projects.map((p, i) => (
               <article
-                className={p.url ? "card up linked" : "card up"}
+                className={`card up linked cat-${p.groups[0].toLowerCase()}${i === 0 ? " featured" : ""}`}
                 data-g={p.groups.join(" ")}
+                data-i={i}
                 style={vars({ "--i": i % 3 })}
                 key={p.name}
               >
+                {i === 0 && <span className="feat">Featured</span>}
                 {p.inProgress && <span className="status">In progress</span>}
                 {p.url && (
-                  <span className="status" aria-hidden="true">
-                    {p.urlLabel}
-                  </span>
+                  <a className="status" href={p.url} {...external}>
+                    {p.urlLabel} <span aria-hidden="true">↗</span>
+                    <span className="vh">
+                      {" "}
+                      {p.name} on {p.urlLabel} (opens in a new tab)
+                    </span>
+                  </a>
                 )}
                 <div
                   className="vis"
@@ -455,17 +436,10 @@ export default function Home() {
                 />
                 <div className="cb">
                   <h3>
-                    {p.url ? (
-                      <a className="card-link" href={p.url} {...external}>
-                        {p.name}
-                        <span className="vh">
-                          {" "}
-                          on {p.urlLabel} (opens in a new tab)
-                        </span>
-                      </a>
-                    ) : (
-                      p.name
-                    )}
+                    <button type="button" className="card-open">
+                      {p.name}
+                      <span className="vh">, open case study</span>
+                    </button>
                   </h3>
                   <p>{p.line}</p>
                   <ul className="chips">
@@ -478,6 +452,38 @@ export default function Home() {
             ))}
           </div>
           <Swipe id="grid" label="projects" />
+          <dialog className="case" id="case" aria-labelledby="caseTitle">
+            <div className="case-top">
+              <p className="case-cats">
+                <span id="caseCats" />
+                <span className="case-status" id="caseStatus" />
+              </p>
+              <button
+                type="button"
+                className="case-close"
+                id="caseClose"
+                aria-label="Close case study"
+              >
+                <span aria-hidden="true">✕</span>
+              </button>
+            </div>
+            <div className="vis case-vis" id="caseVis" />
+            <div className="case-body">
+              <h2 className="case-title" id="caseTitle" />
+              <p className="case-line" id="caseLine" />
+              <h3 className="case-h">Stack by role</h3>
+              <ol className="case-arch" id="caseArch" />
+              <div className="case-foot">
+                <a className="case-link" id="caseLink" href="#projects" {...external}>
+                  View project ↗<span className="vh"> (opens in a new tab)</span>
+                </a>
+                <div className="case-nav">
+                  <button type="button" id="casePrev" />
+                  <button type="button" id="caseNext" />
+                </div>
+              </div>
+            </div>
+          </dialog>
         </Section>
 
         <Section id="certifications" title="Certifications">

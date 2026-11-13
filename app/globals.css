@@ -240,11 +240,14 @@ h2 .w>span{display:inline-block}
 .card::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(240px circle at var(--sx,50%) var(--sy,50%),rgba(255,255,255,.3),transparent 65%);opacity:0;transition:opacity .3s}
 .linked:hover::after{opacity:1}
 /* The whole card is the link, and the ring goes round the whole card. */
-.card-link{color:inherit;text-decoration:none}
-.card-link::before{content:"";position:absolute;inset:0;z-index:3}
-.card-link:focus-visible{outline:0;box-shadow:none}
-.card:has(.card-link:focus-visible){outline:3px solid var(--accent);outline-offset:2px;box-shadow:0 0 0 7px var(--ink)}
-.linked:hover .card-link{text-decoration:underline;text-underline-offset:4px}
+/* The whole card opens its case study. The ring goes round the whole card. */
+.card-open{padding:0;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;line-height:inherit;text-align:left;cursor:pointer}
+.card-open::before{content:"";position:absolute;inset:0;z-index:3}
+.card-open:focus-visible{outline:0;box-shadow:none}
+.card:has(.card-open:focus-visible){outline:3px solid var(--accent);outline-offset:2px;box-shadow:0 0 0 7px var(--ink)}
+.linked:hover .card-open{text-decoration:underline;text-underline-offset:4px}
+html:not(.js) .card-open{cursor:default}
+html:not(.js) .card-open::before{display:none}
 .vis{height:170px;position:relative;overflow:hidden;background:var(--vis);color:var(--ink)}
 .card:nth-child(3n+1) .vis{--vis:var(--lime)}
 .card:nth-child(3n+2) .vis{--vis:var(--pink)}
@@ -281,6 +284,32 @@ h2 .w>span{display:inline-block}
 .swipe button[aria-disabled=true]{opacity:.35;cursor:default}
 .swipe-count{min-width:4.5em;text-align:center;font:600 15px var(--body);font-variant-numeric:tabular-nums;color:var(--muted)}
 .status{position:absolute;right:12px;top:12px;font-size:13.5px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--ink);color:var(--cream);z-index:2;text-decoration:none}
+/* The repo link stays reachable on the card, above the case-study button. */
+a.status{z-index:4;display:inline-flex;align-items:center;gap:4px;min-height:28px;padding:3px 11px}
+a.status:hover{text-decoration:underline;text-underline-offset:3px}
+.feat{position:absolute;left:12px;top:12px;z-index:2;padding:3px 10px;border-radius:99px;background:var(--ink);color:var(--cream);font-size:13.5px;font-weight:700}
+/* Colour means category. */
+.cat-data{--cat:var(--lime)}
+.cat-ai{--cat:var(--pink)}
+.cat-platform{--cat:var(--sky)}
+.cat-apps{--cat:#ffc48a}
+#grid .card .vis{--vis:var(--cat)}
+.filter button[data-g=Data]{--cat:var(--lime)}
+.filter button[data-g=AI]{--cat:var(--pink)}
+.filter button[data-g=Platform]{--cat:var(--sky)}
+.filter button[data-g=Apps]{--cat:#ffc48a}
+.filter button:not([data-g=All])::before{content:"";display:inline-block;width:10px;height:10px;margin-right:7px;border-radius:50%;background:var(--cat);box-shadow:0 0 0 1.5px currentColor;vertical-align:.05em}
+/* The first project leads. */
+@media (min-width:681px){
+  .grid{grid-auto-flow:dense}
+  #grid .card.featured{grid-column:span 2}
+  #grid .card.featured .vis{height:260px}
+}
+@media (min-width:1021px){
+  #grid .card.featured{grid-row:span 2}
+  #grid .card.featured .vis{flex:1;height:auto;min-height:320px}
+  #grid .card.featured .cb h3{font-size:clamp(28px,2.4vw,40px)}
+}
 /* art loops */
 .blink{animation:bl 1.7s steps(2) infinite}
 @keyframes bl{50%{opacity:.2}}
@@ -367,6 +396,18 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto) auto;alig
 @keyframes theme{from{clip-path:circle(0 at var(--vx) var(--vy))}to{clip-path:circle(var(--vr) at var(--vx) var(--vy))}}
 /* load and reveal */
 .js h1 .l{animation:rise .95s var(--ease) both;animation-delay:calc(var(--n)*42ms + 60ms)}
+/* Living data hero: points stream in and draw the name. The real <h1> stays for readers and search.
+   If the points never start, the plain name fades in after a few seconds. */
+@media (prefers-reduced-motion:no-preference){
+  .js .hero h1{opacity:0;animation:dhsafe .4s 5s both}
+  .js .hero h1 .l{animation:none}
+  .js .hero.dh-on h1{animation:none}
+  .js .hero.dh-fail h1{opacity:1;animation:none}
+}
+@keyframes dhsafe{from{opacity:0}to{opacity:1}}
+.dh-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.wires{transition:opacity .8s}
+.hero.dh-stream .wires{opacity:0}
 @keyframes rise{from{transform:translateY(106%) rotate(5deg)}}
 .js .fadein{animation:fadeup .7s var(--ease) both;animation-delay:calc(var(--n,0)*90ms + .55s)}
 @keyframes fadeup{from{opacity:0;transform:translateY(16px)}}
@@ -502,3 +543,47 @@ html:not(.js) .sk-btn{opacity:1;cursor:default}
   .js .loop-grid{align-content:center}
   .js .stage-panel{min-height:180px}
 }
+/* project case study */
+html:has(.case[open]){overflow:hidden}
+.case{width:min(1100px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border:0;border-radius:28px;background:var(--card);color:var(--card-fg);overflow:auto;overscroll-behavior:contain}
+.case::backdrop{background:rgba(7,5,26,.74);backdrop-filter:blur(6px)}
+.case[data-cat=data]{--cat:var(--lime)}
+.case[data-cat=ai]{--cat:var(--pink)}
+.case[data-cat=platform]{--cat:var(--sky)}
+.case[data-cat=apps]{--cat:#ffc48a}
+.case-top{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:var(--card)}
+.case-cats{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--card-muted)}
+.case-status{padding:3px 10px;border-radius:999px;background:var(--ink);color:var(--cream);letter-spacing:0;text-transform:none}
+.case-close{flex:none;width:44px;height:44px;border:2px solid currentColor;border-radius:50%;background:transparent;color:inherit;font-size:18px;cursor:pointer}
+.case-vis{--vis:var(--cat);height:clamp(220px,34vh,380px);margin:0 20px;border-radius:20px}
+.case-body{padding:26px clamp(20px,4vw,48px) 36px}
+.case .case-title{margin:0;font:400 clamp(42px,6vw,86px)/1 var(--display);text-transform:uppercase}
+.case-line{margin-top:10px;font-size:clamp(19px,1.8vw,24px);color:var(--card-muted)}
+.case-h{margin:30px 0 12px;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--card-muted)}
+.case-arch{display:flex;flex-wrap:wrap;gap:12px 30px}
+.case-arch>li{position:relative;flex:1 1 150px;padding:14px;border:2px solid color-mix(in srgb,var(--card-fg) 22%,transparent);border-radius:16px}
+.case-arch>li+li::before{content:"→";position:absolute;left:-23px;top:50%;transform:translateY(-50%);font-weight:700;font-size:18px;color:var(--card-muted)}
+.case-role{display:block;margin-bottom:8px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--card-muted)}
+.case-arch ul{display:flex;flex-direction:column;gap:7px}
+.case-arch ul li{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px}
+.case-arch .ic{width:20px;height:20px}
+.case-arch .dot-ic{width:10px;height:10px}
+.case-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:30px}
+.case-link{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--ink);color:var(--cream);font-weight:700;text-decoration:none}
+.case-link[hidden]{display:none}
+.case-nav{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+.case-nav button{max-width:280px;min-height:44px;padding:0 14px;overflow:hidden;border:2px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:600 15px var(--body);text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+@media (max-width:680px){
+  .case{width:100vw;height:100dvh;max-height:100dvh;margin:0;border-radius:0}
+  .case-vis{margin:0 12px}
+  .case-arch{gap:10px}
+  .case-arch>li+li::before{display:none}
+  .case-nav{margin-left:0;width:100%}
+  .case-nav button{flex:1;max-width:none}
+}
+/* The case view grows out of its card. The theme switch keeps its circle reveal. */
+html.vt-case::view-transition-old(root){animation:vtout .25s ease both}
+html.vt-case::view-transition-new(root){animation:vtin .35s ease both}
+::view-transition-group(case-vis){animation-duration:.55s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+@keyframes vtout{to{opacity:0}}
+@keyframes vtin{from{opacity:0}}

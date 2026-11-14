@@ -1011,3 +1011,39 @@ test("case study view passes axe in both themes", async ({ browser }) => {
     await ctx.close();
   }
 });
+
+test("the name fits on foldable and phone screens even with larger text", async ({ browser }) => {
+  // Wider letters stand in for a phone's larger text setting, which once pushed the R of KUMAR to a new line.
+  for (const [width, spacing] of [
+    [344, ".1em"],
+    [412, ".1em"],
+    [600, ".25em"],
+    [673, ".1em"],
+  ] as const) {
+    const ctx = await browser.newContext({ viewport: { width, height: 880 }, isMobile: true, hasTouch: true });
+    await ctx.addInitScript((sp) => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const s = document.createElement("style");
+        s.textContent = `h1 .l{letter-spacing:${sp}}`;
+        document.head.append(s);
+      });
+    }, spacing);
+    const page = await ctx.newPage();
+    await open(page);
+    await page.waitForTimeout(300);
+    const fit = await page.locator("h1 .w").evaluateAll((words) =>
+      words.map((word) => {
+        const tops = [...word.children].map((l) => l.getBoundingClientRect().top);
+        return {
+          oneLine: Math.max(...tops) - Math.min(...tops) < 5,
+          inside: word.getBoundingClientRect().right <= innerWidth,
+        };
+      }),
+    );
+    expect(fit, `${width}px`).toEqual([
+      { oneLine: true, inside: true },
+      { oneLine: true, inside: true },
+    ]);
+    await ctx.close();
+  }
+});

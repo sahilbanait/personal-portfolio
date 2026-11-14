@@ -41,6 +41,43 @@ export function startMotion() {
     cleanups.push(() => io.disconnect());
   };
 
+  /* ---------- The name always fits ---------- */
+  // A phone's larger text setting can make the name wider than its space. Shrink it just
+  // enough so no word breaks. Runs before the hero reads the letters, so the points match.
+  const nameEl = document.querySelector<HTMLElement>("#home h1");
+  if (nameEl) {
+    const fitName = () => {
+      nameEl.style.removeProperty("font-size");
+      const space = nameEl.clientWidth;
+      const words = [...nameEl.querySelectorAll<HTMLElement>(".w")];
+      if (!space || !words.length) return;
+      const widths = words.map((w) => w.getBoundingClientRect().width);
+      const stacked = getComputedStyle(words[0]).display === "block";
+      const gap = stacked ? 0 : words.slice(1).reduce((n, w) => n + parseFloat(getComputedStyle(w).marginLeft), 0);
+      const need = stacked ? Math.max(...widths) : widths.reduce((a, b) => a + b, 0) + gap;
+      if (need > space * 0.99)
+        nameEl.style.fontSize = `${parseFloat(getComputedStyle(nameEl).fontSize) * ((space * 0.97) / need)}px`;
+    };
+    document.fonts.ready.then(() => {
+      if (running) fitName();
+    });
+    // Refit when the space changes, or when the words do (a text size or spacing setting).
+    let fitQueued = 0;
+    const fitWatch = new ResizeObserver(() => {
+      if (fitQueued) return;
+      fitQueued = requestAnimationFrame(() => {
+        fitQueued = 0;
+        if (running) fitName();
+      });
+    });
+    fitWatch.observe(nameEl);
+    nameEl.querySelectorAll(".w").forEach((w) => fitWatch.observe(w));
+    cleanups.push(() => {
+      fitWatch.disconnect();
+      cancelAnimationFrame(fitQueued);
+    });
+  }
+
   /* ---------- Reveal on scroll ---------- */
   observe(
     (entries, io) =>

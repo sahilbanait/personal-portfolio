@@ -118,7 +118,8 @@ export function startMotion() {
     if (i === active) return;
     active = i;
     const s = stages[i];
-    panel.innerHTML = `<div class="stage-word"><span class="word-in">${s.t}</span></div><p class="stage-line line-in">${s.p}</p><ul class="stage-tools">${s.tools.map((t, k) => `<li class="pop" style="--n:${k}">${iconHtml(t)}${t}</li>`).join("")}</ul>`;
+    const num = String(i + 1).padStart(2, "0");
+    panel.innerHTML = `<span class="stage-num">${num}</span><p class="stage-n line-in">Stage ${num} of ${String(N).padStart(2, "0")}</p><div class="stage-word"><span class="word-in">${s.t}</span></div><p class="stage-line line-in">${s.p}</p><ul class="stage-tools">${s.tools.map((t, k) => `<li class="pop" style="--n:${k}">${iconHtml(t)}${t}</li>`).join("")}</ul>`;
     nodes.forEach((nd, k) => {
       nd.classList.toggle("on", k === i);
       nd.classList.toggle("done", k < i);
@@ -1221,15 +1222,5 @@ export function startMotion() {
       on,
     );
   });
-  const wires = $("wires");
-  addEventListener(
-    "pointermove",
-    (e) => {
-      if (e.pointerType !== "mouse") return;
-      wires.style.transform = `translate(${(e.clientX / innerWidth - 0.5) * -22}px,${(e.clientY / innerHeight - 0.5) * -22}px) scale(1.04)`;
-    },
-    { passive: true, signal: stop.signal },
-  );
-
   return finish;
 }

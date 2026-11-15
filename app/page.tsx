@@ -173,17 +173,6 @@ export default function Home() {
 
       <main id="main">
         <div className="hero wrap" id="home">
-          <svg
-            className="wires"
-            id="wires"
-            viewBox="0 0 1440 900"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <path d="M-40 170C340 80 520 280 860 190S1320 90 1500 220" />
-            <path d="M-40 640C260 560 520 760 820 660S1260 560 1500 700" />
-            <path d="M-40 760C320 860 640 660 960 780S1320 840 1500 760" />
-          </svg>
           <div className="hero-main">
             <p className="role fadein" style={vars({ "--n": 0 })}>
               {profile.title}, {profile.location}
@@ -233,7 +222,9 @@ export default function Home() {
                 )}
               </div>
             </div>
-            <ul className="facts fadein" style={vars({ "--n": 3 })}>
+          </div>
+          <div className="infobar fadein" style={vars({ "--n": 3 })}>
+            <ul className="facts">
               <li>
                 <b>{projects.length}</b> projects
               </li>
@@ -242,6 +233,9 @@ export default function Home() {
               </li>
               <li>{leadCert}</li>
             </ul>
+            <a className="scroll-cue" href="#lifecycle">
+              Scroll <span aria-hidden="true">↓</span>
+            </a>
           </div>
           {marquee.map((row, r) => (
             <div

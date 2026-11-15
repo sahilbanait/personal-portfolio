@@ -1047,3 +1047,24 @@ test("the name fits on foldable and phone screens even with larger text", async 
     await ctx.close();
   }
 });
+
+test("hero has a glow and an info bar, and the current stage sits on a numbered card", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const errors = await open(page);
+  // The dashed lines are gone; the facts sit in a bar with a link to the next section.
+  await expect(page.locator("#wires, .wires")).toHaveCount(0);
+  await expect(page.locator(".infobar .facts li")).toHaveCount(3);
+  const cue = page.locator(".infobar .scroll-cue");
+  await expect(cue).toHaveAttribute("href", "#lifecycle");
+  expect(await page.locator("#home").evaluate((h) => getComputedStyle(h, "::before").backgroundImage)).toContain("radial-gradient");
+  // The card shows which stage this is, as a label and a large number.
+  const range = await page.evaluate(() => {
+    const r = document.getElementById("lifecycle")!.getBoundingClientRect();
+    return { top: r.top + scrollY, len: r.height - innerHeight };
+  });
+  await page.evaluate((y) => scrollTo(0, y), range.top + range.len * (3.3 / 8));
+  await expect(page.locator("#panel .stage-n")).toHaveText("Stage 04 of 08");
+  await expect(page.locator("#panel .stage-num")).toHaveText("04");
+  await expect(page.locator("#panel .stage-word")).toHaveText("Orchestrate");
+  expect(errors).toEqual([]);
+});

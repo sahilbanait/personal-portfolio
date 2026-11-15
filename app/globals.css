@@ -56,7 +56,7 @@ main,.hero,footer{position:relative;z-index:1}
 .t-ic circle{fill:none;stroke:currentColor;stroke-width:1.6}
 .t-ic path{fill:currentColor}
 .ctl .sep{width:1px;height:22px;background:var(--line);margin:0 4px}
-.hero-main{margin-block:auto;padding-block:28px;container-type:inline-size}
+.hero-main{width:100%;margin-block:auto;padding-block:28px;container-type:inline-size}
 .role{font-size:clamp(20px,2vw,30px);font-weight:600;color:var(--muted);margin-bottom:6px}
 h1{font:400 var(--name)/1.02 var(--display);text-transform:uppercase;letter-spacing:.005em}
 h1 .w{display:inline-block;overflow:clip;vertical-align:top;white-space:nowrap}
@@ -69,10 +69,12 @@ h1 .l{display:inline-block}
 .swap span.on{transform:none;opacity:1}
 .swap span.off{transform:translateY(-60%);opacity:.001}
 .btns{display:flex;flex-wrap:wrap;gap:10px}
-.infobar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 24px;margin-inline:-32px;padding:12px 32px;border-top:2px solid var(--line)}
-.facts{display:flex;flex-wrap:wrap;align-items:center;row-gap:6px}
-.facts li{display:inline-flex;align-items:baseline;gap:6px;padding-right:18px;margin-right:18px;border-right:1px solid var(--line);font-weight:600;font-size:15px}
-.facts li:last-child{padding-right:0;margin-right:0;border-right:0}
+.infobar{border-top:2px solid var(--line)}
+.infobar-in{display:flex;flex-wrap:wrap;align-items:center;gap:6px 24px;padding-block:12px}
+/* Each fact has a divider on its left. The list is shifted left by one divider and clipped there,
+   so whichever fact starts a row, on any screen, never shows a stray line. */
+.facts{display:flex;flex-wrap:wrap;align-items:center;row-gap:6px;margin-left:-19px;clip-path:inset(-4px -4px -4px 19px)}
+.facts li{display:inline-flex;align-items:baseline;gap:6px;padding-left:18px;margin-right:18px;border-left:1px solid var(--line);font-weight:600;font-size:15px}
 .scroll-cue{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-left:auto;font:700 13px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none}
 .scroll-cue:hover{color:var(--fg)}
 .scroll-cue span{display:inline-block;animation:bob 1.8s ease-in-out infinite}
@@ -82,7 +84,7 @@ h1 .l{display:inline-block}
 .btn:hover{transform:translateY(-2px)}
 .btn.main{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
 .btn:not(.main):hover{background:var(--fg);color:var(--bg)}
-.marquee{overflow:hidden;border-top:2px solid var(--line);padding-block:12px;margin-inline:-32px;display:flex}
+.marquee{overflow:hidden;border-top:2px solid var(--line);padding-block:12px;display:flex}
 .marquee+.marquee{border-top:0;padding-top:0}
 .marquee ul{display:flex;gap:42px;padding-right:42px;flex:none;animation:mq 60s linear infinite}
 .marquee.rev ul{animation-direction:reverse}
@@ -446,8 +448,8 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto) auto;alig
 @media (max-width:680px){.sph-item{font-size:13.5px;padding:4px 9px;gap:5px}.sph-item .ic{width:15px;height:15px}.sph-item .dot-ic{width:11px;height:11px}}
 @media (max-width:680px){
   .wrap{padding-inline:20px}
-  .marquee,.big-mq{margin-inline:-20px}
-  .infobar{margin-inline:-20px;padding:10px 20px}
+  .big-mq{margin-inline:-20px}
+  .infobar-in{padding-block:10px}
   .scroll-cue{display:none}
   .bar-in{gap:6px}
   .bar-menu nav{padding-inline:20px}
@@ -478,8 +480,7 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto) auto;alig
   .bar-menu nav{padding-inline:20px}
   section.s{padding-block:56px}
   .ai-lab{padding-block:56px}
-  .facts{gap:6px}
-  .facts li{font-size:14px;padding:5px 12px}
+  .facts li{font-size:14px}
   .sphere{width:min(100%,340px)}
   /* projects and hobbies swipe sideways instead of stacking */
   .filter{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:-12px -20px 10px;padding:12px 20px}
@@ -545,10 +546,15 @@ html:not(.js) .sk-btn{opacity:1;cursor:default}
   .cert-stats li{flex-direction:row;align-items:baseline;gap:10px}
   .cert-stats b{font-size:46px}
 }
+/* Portrait tablets: the name stacks on two lines, as on phones, so it fills the taller screen. */
+@media (min-width:681px) and (max-aspect-ratio:3/4){
+  h1{font-size:var(--name-sm)}
+  h1 .w{display:block;width:fit-content}
+  h1 .w+.w{margin-left:0}
+}
 @media (max-width:319px){
   .wrap{padding-inline:16px}
-  .marquee,.big-mq{margin-inline:-16px}
-  .infobar{margin-inline:-16px;padding-inline:16px}
+  .big-mq{margin-inline:-16px}
   .grid,.filter{margin-inline:-16px;padding-inline:16px;scroll-padding-inline:16px}
   .bar-menu nav{padding-inline:16px}
   .ctl .sep{display:none}

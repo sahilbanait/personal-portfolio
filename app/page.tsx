@@ -172,8 +172,9 @@ export default function Home() {
       </header>
 
       <main id="main">
-        <div className="hero wrap" id="home">
-          <div className="hero-main">
+        {/* The hero runs the full width of the screen; its content keeps to the page column. */}
+        <div className="hero" id="home">
+          <div className="hero-main wrap">
             <p className="role fadein" style={vars({ "--n": 0 })}>
               {profile.title}, {profile.location}
             </p>
@@ -224,18 +225,20 @@ export default function Home() {
             </div>
           </div>
           <div className="infobar fadein" style={vars({ "--n": 3 })}>
-            <ul className="facts">
-              <li>
-                <b>{projects.length}</b> projects
-              </li>
-              <li>
-                <b>{certCount}</b> certifications
-              </li>
-              <li>{leadCert}</li>
-            </ul>
-            <a className="scroll-cue" href="#lifecycle">
-              Scroll <span aria-hidden="true">↓</span>
-            </a>
+            <div className="infobar-in wrap">
+              <ul className="facts">
+                <li>
+                  <b>{projects.length}</b> projects
+                </li>
+                <li>
+                  <b>{certCount}</b> certifications
+                </li>
+                <li>{leadCert}</li>
+              </ul>
+              <a className="scroll-cue" href="#lifecycle">
+                Scroll <span aria-hidden="true">↓</span>
+              </a>
+            </div>
           </div>
           {marquee.map((row, r) => (
             <div

@@ -42,21 +42,61 @@ export function startMotion() {
   };
 
   /* ---------- The name always fits ---------- */
-  // A phone's larger text setting can make the name wider than its space. Shrink it just
-  // enough so no word breaks. Runs before the hero reads the letters, so the points match.
+  // Big type needs optical alignment. Each line's first letter is pulled left by its side
+  // bearing, so the ink lines up with the text above and below. On wider screens the name is
+  // then sized so its ink ends exactly at the column's right edge, in line with the buttons.
+  // On phones it only ever shrinks, e.g. when a larger text setting would break a word.
+  // Runs before the hero reads the letters, so the points match.
   const nameEl = document.querySelector<HTMLElement>("#home h1");
   if (nameEl) {
+    const glyphs = document.createElement("canvas").getContext("2d");
+    const wide = matchMedia("(min-width: 681px)");
     const fitName = () => {
-      nameEl.style.removeProperty("font-size");
-      const space = nameEl.clientWidth;
       const words = [...nameEl.querySelectorAll<HTMLElement>(".w")];
-      if (!space || !words.length) return;
+      nameEl.style.removeProperty("font-size");
+      words.forEach((w) => {
+        w.style.removeProperty("margin-left");
+        w.style.removeProperty("margin-right");
+      });
+      const space = nameEl.clientWidth;
+      if (!space || !words.length || !glyphs) return;
+      const cs = getComputedStyle(nameEl);
+      const size = parseFloat(cs.fontSize);
+      glyphs.font = `${cs.fontWeight} ${size}px ${cs.fontFamily}`;
+      // Blank space inside a word's box: the side bearings before its first letter's ink and
+      // after its last letter's ink. Letter spacing stays inside the box, so a larger text
+      // setting can never push a word past the edge.
+      const trims = words.map((w) => {
+        const ls = w.querySelectorAll<HTMLElement>(".l");
+        const first = ls[0];
+        const last = ls[ls.length - 1];
+        if (!first || !last) return [0, 0];
+        const a = glyphs.measureText((first.textContent ?? "").toUpperCase());
+        const b = glyphs.measureText((last.textContent ?? "").toUpperCase());
+        return [
+          Math.max(0, -a.actualBoundingBoxLeft),
+          Math.max(0, b.width - b.actualBoundingBoxRight),
+        ];
+      });
       const widths = words.map((w) => w.getBoundingClientRect().width);
       const stacked = getComputedStyle(words[0]).display === "block";
-      const gap = stacked ? 0 : words.slice(1).reduce((n, w) => n + parseFloat(getComputedStyle(w).marginLeft), 0);
-      const need = stacked ? Math.max(...widths) : widths.reduce((a, b) => a + b, 0) + gap;
-      if (need > space * 0.99)
-        nameEl.style.fontSize = `${parseFloat(getComputedStyle(nameEl).fontSize) * ((space * 0.97) / need)}px`;
+      let ink: number;
+      if (stacked) ink = Math.max(...widths.map((w, i) => w - trims[i][0] - trims[i][1]));
+      else {
+        const gap = words.slice(1).reduce((n, w) => n + parseFloat(getComputedStyle(w).marginLeft), 0);
+        ink = widths.reduce((a, b) => a + b, 0) + gap - trims[0][0] - trims[trims.length - 1][1];
+      }
+      if (ink <= 0) return;
+      // Trimmed in em, so the trims scale with the size set below. Each line's box then
+      // measures exactly its ink, so it never wraps.
+      const em = (px: number) => `${(-px / size).toFixed(4)}em`;
+      words.forEach((w, i) => {
+        if (stacked || i === 0) w.style.marginLeft = em(trims[i][0]);
+        if (stacked || i === words.length - 1) w.style.marginRight = em(trims[i][1]);
+      });
+      let k = (space - 2) / ink;
+      if (!wide.matches) k = Math.min(1, k);
+      if (Math.abs(k - 1) > 0.001) nameEl.style.fontSize = `${size * k}px`;
     };
     document.fonts.ready.then(() => {
       if (running) fitName();

@@ -18,6 +18,8 @@ export const LANES = [
 
 const LANE_FADE_AT = 3200;
 const LANE_FADE_FOR = 1400;
+// Room above and below the name for points the pointer pushes aside.
+const BAND_PAD = 90;
 
 /** Starts the hero. Returns a function that stops it and puts the plain name back. */
 export function startDataHero(hero: HTMLElement, isPaused: () => boolean): () => void {
@@ -48,6 +50,10 @@ export function startDataHero(hero: HTMLElement, isPaused: () => boolean): () =>
   let state = new Uint8Array(0);
   let laneY: number[] = [];
   let bandX = 0;
+  // The canvas only covers the band around the name (the points never leave it), so each frame
+  // repaints and uploads far fewer pixels. Drawing still uses the hero's own coordinates.
+  let bandTop = 0;
+  let bandH = 0;
   let t0 = 0;
   let prev = 0;
   let raf = 0;
@@ -73,10 +79,15 @@ export function startDataHero(hero: HTMLElement, isPaused: () => boolean): () =>
     W = Math.round(box.width);
     H = Math.round(box.height);
     if (!W || !H) return;
+    const nameBox = h1.getBoundingClientRect();
+    bandTop = Math.max(0, Math.floor(nameBox.top - box.top - BAND_PAD));
+    bandH = Math.min(H, Math.ceil(nameBox.bottom - box.top + BAND_PAD)) - bandTop;
+    canvas.style.top = `${bandTop}px`;
+    canvas.style.height = `${bandH}px`;
     const dpr = Math.min(2, devicePixelRatio || 1);
     canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    canvas.height = bandH * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, -bandTop * dpr);
     readColors();
 
     const off = document.createElement("canvas");
@@ -96,7 +107,7 @@ export function startDataHero(hero: HTMLElement, isPaused: () => boolean): () =>
       o.fillText((l.textContent ?? "").toUpperCase(), r.left - box.left, base);
     });
     const img = o.getImageData(0, 0, W, H).data;
-    const name = h1.getBoundingClientRect();
+    const name = nameBox;
     const cap = W < 700 ? 3600 : 6400;
     let step = Math.max(2, Math.round(Math.sqrt((name.width * name.height) / (cap * 1.6))));
     let pts: number[] = [];
@@ -194,7 +205,7 @@ export function startDataHero(hero: HTMLElement, isPaused: () => boolean): () =>
   };
 
   const draw = (now: number) => {
-    ctx.clearRect(0, 0, W, H);
+    ctx.clearRect(0, bandTop, W, bandH);
     const age = now - t0;
     const laneAlpha = streaming ? Math.max(0, 1 - Math.max(0, age - LANE_FADE_AT) / LANE_FADE_FOR) : 0;
     if (streaming && laneAlpha === 0) {
@@ -272,7 +283,7 @@ export function startDataHero(hero: HTMLElement, isPaused: () => boolean): () =>
   const move = (e: PointerEvent) => {
     const r = canvas.getBoundingClientRect();
     ptr.x = e.clientX - r.left;
-    ptr.y = e.clientY - r.top;
+    ptr.y = e.clientY - r.top + bandTop;
     dirty = true;
   };
   const leave = () => {

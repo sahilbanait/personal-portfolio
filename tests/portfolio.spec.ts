@@ -1068,3 +1068,63 @@ test("hero has a glow and an info bar, and the current stage sits on a numbered 
   await expect(page.locator("#panel .stage-word")).toHaveText("Orchestrate");
   expect(errors).toEqual([]);
 });
+
+test("hero stays light on phones: sideways touch moves the name, and nothing animates off screen", async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 412, height: 915 }, hasTouch: true, isMobile: true });
+  const page = await ctx.newPage();
+  await page.addInitScript(() => {
+    const w = window as unknown as { rateWrites: number; ev: { move: number; cancel: number } };
+    w.rateWrites = 0;
+    const d = Object.getOwnPropertyDescriptor(Animation.prototype, "playbackRate")!;
+    Object.defineProperty(Animation.prototype, "playbackRate", {
+      ...d,
+      set(v: number) {
+        w.rateWrites++;
+        d.set!.call(this, v);
+      },
+    });
+    w.ev = { move: 0, cancel: 0 };
+    addEventListener("pointermove", () => w.ev.move++, true);
+    addEventListener("pointercancel", () => w.ev.cancel++, true);
+  });
+  const errors = await open(page);
+  await page.waitForTimeout(6000);
+  type W = { rateWrites: number; ev: { move: number; cancel: number } };
+  // The marquees are left alone while nothing scrolls.
+  await page.evaluate(() => ((window as unknown as W).rateWrites = 0));
+  await page.waitForTimeout(1000);
+  expect(await page.evaluate(() => (window as unknown as W).rateWrites)).toBe(0);
+  // Animations in sections out of view are paused.
+  const running = (names: string[]) =>
+    page.evaluate(
+      (n) => document.getAnimations().filter((a) => n.includes((a as CSSAnimation).animationName) && a.playState === "running").length,
+      names,
+    );
+  expect(await running(["nowpulse", "ringa", "ringb", "halo"])).toBe(0);
+  // A sideways finger drag over the name reaches the points instead of being taken by the browser.
+  expect(await page.locator("#home").evaluate((h) => getComputedStyle(h).touchAction)).toBe("pan-y pinch-zoom");
+  const box = (await page.locator("#home h1").boundingBox())!;
+  const cdp = await ctx.newCDPSession(page);
+  const y = box.y + box.height / 2;
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: box.x + 20, y }] });
+  for (let k = 1; k <= 20; k++) {
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: box.x + 20 + k * 12, y }] });
+  }
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  const ev = await page.evaluate(() => (window as unknown as W).ev);
+  expect(ev.cancel).toBe(0);
+  expect(ev.move).toBeGreaterThanOrEqual(15);
+  // The points stay within the canvas band around the name.
+  const band = await page.evaluate(() => {
+    const c = document.querySelector(".dh-canvas")!.getBoundingClientRect();
+    const n = document.querySelector("#home h1")!.getBoundingClientRect();
+    return { above: n.top - c.top, below: c.bottom - n.bottom };
+  });
+  expect(band.above).toBeGreaterThanOrEqual(80);
+  expect(band.below).toBeGreaterThanOrEqual(80);
+  // On screen, the timeline's pulse runs again.
+  await toSection(page, "background");
+  await expect.poll(() => running(["nowpulse"])).toBe(1);
+  expect(errors).toEqual([]);
+  await ctx.close();
+});

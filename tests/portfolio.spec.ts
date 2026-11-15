@@ -1128,3 +1128,57 @@ test("hero stays light on phones: sideways touch moves the name, and nothing ani
   expect(errors).toEqual([]);
   await ctx.close();
 });
+
+test("hero spans the screen, the name lines up with the column, and facts never show a stray divider", async ({ browser }) => {
+  for (const [width, height] of [
+    [1920, 1080],
+    [1440, 900],
+    [768, 1024],
+    [390, 844],
+  ] as const) {
+    const ctx = await browser.newContext({ viewport: { width, height }, ...(width < 1000 ? { isMobile: true, hasTouch: true } : {}) });
+    const page = await ctx.newPage();
+    const errors = await open(page);
+    await page.waitForTimeout(400);
+    const m = await page.evaluate(() => {
+      const box = (s: string) => document.querySelector(s)!.getBoundingClientRect();
+      const main = document.querySelector<HTMLElement>("#home .hero-main")!;
+      const pad = parseFloat(getComputedStyle(main).paddingLeft);
+      const col = { left: main.getBoundingClientRect().left + pad, right: main.getBoundingClientRect().right - pad };
+      const words = [...document.querySelectorAll("#home h1 .w")].map((w) => w.getBoundingClientRect());
+      const facts = [...document.querySelectorAll(".facts li")].map((li) => li.getBoundingClientRect().left);
+      return {
+        vw: document.documentElement.clientWidth,
+        hero: [box("#home").left, box("#home").right],
+        infobar: [box(".infobar").left, box(".infobar").right],
+        marquee: [box(".marquee").left, box(".marquee").right],
+        barLeft: box(".bar-home").left,
+        col,
+        lines: new Set(words.map((w) => Math.round(w.top))).size,
+        nameRight: Math.max(...words.map((w) => w.right)),
+        btnsRight: box("#home .btns").right,
+        factsClip: getComputedStyle(document.querySelector(".facts")!).clipPath,
+        rowStarts: facts.filter((l) => l === Math.min(...facts)).length,
+        firstFactText: Math.min(...facts) + 19,
+      };
+    });
+    const at = `${width}px`;
+    // Background, info bar and marquees run edge to edge; the content keeps to the page column.
+    expect(m.hero, at).toEqual([0, m.vw]);
+    expect(m.infobar, at).toEqual([0, m.vw]);
+    expect(m.marquee, at).toEqual([0, m.vw]);
+    expect(Math.abs(m.col.left - m.barLeft), at).toBeLessThanOrEqual(1);
+    if (width > 680) {
+      // The name ends in line with the buttons.
+      expect(Math.abs(m.nameRight - m.btnsRight), at).toBeLessThanOrEqual(4);
+    }
+    // Portrait tablets and phones stack the name; wider screens keep it on one line.
+    expect(m.lines, at).toBe(width <= 768 ? 2 : 1);
+    // Facts start at the column, and a fact that starts a row has its divider clipped away.
+    expect(m.factsClip, at).toContain("inset");
+    expect(Math.abs(m.firstFactText - m.col.left), at).toBeLessThanOrEqual(1);
+    expect(m.rowStarts, at).toBe(width < 500 ? 2 : 1);
+    expect(errors).toEqual([]);
+    await ctx.close();
+  }
+});

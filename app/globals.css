@@ -422,6 +422,8 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto) auto;alig
 }
 @keyframes dhsafe{from{opacity:0}to{opacity:1}}
 .dh-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+/* On touch screens a sideways drag moves the points, an up or down drag still scrolls, and pinch zoom still works. */
+.hero.dh-on{touch-action:pan-y pinch-zoom}
 @keyframes rise{from{transform:translateY(106%) rotate(5deg)}}
 .js .fadein{animation:fadeup .7s var(--ease) both;animation-delay:calc(var(--n,0)*90ms + .55s)}
 @keyframes fadeup{from{opacity:0;transform:translateY(16px)}}
@@ -528,7 +530,7 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto) auto;alig
 #pause .i-play,.paused #pause .i-pause{display:none}
 .paused #pause .i-play{display:block}
 @media (forced-colors:active){.fil-ind{display:none}.filter button[aria-pressed=true],.ctl button[aria-pressed=true],.stops button.on{outline:3px solid Highlight;outline-offset:-3px}}
-.hero.off .marquee ul,.hero.off::before,.loop.off *,.contact.off *{animation-play-state:paused}
+.hero.off .marquee ul,.hero.off::before,.loop.off *,.contact.off *,#background.off li.now::after,.js .ai-lab:not(.live) .s-core,.js .ai-lab:not(.live) .s-ring{animation-play-state:paused}
 .skip-link{position:fixed;left:14px;top:-80px;z-index:50;background:var(--accent);color:var(--accent-fg);padding:12px 18px;border-radius:10px;font-weight:700}
 .skip-link:focus{top:14px}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}

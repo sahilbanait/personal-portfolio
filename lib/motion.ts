@@ -980,9 +980,10 @@ export function startMotion() {
         if (e.target.id === "home") heroLive = e.isIntersecting;
       }),
     0,
-    [lifecycle, $("home"), $("contact")],
+    [lifecycle, $("home"), $("contact"), $("background")],
   );
   const marqueeAnims = $$(".marquee ul").flatMap((el) => el.getAnimations());
+  let mqRate = 1;
   loop((now) => {
     const y = scrollY;
     if (y !== prevY)
@@ -1024,10 +1025,15 @@ export function startMotion() {
     // Marquees speed up while scrolling.
     const v = Math.min(6, 1 + Math.abs(y - prevY) * 0.12);
     prevY = y;
-    if (heroLive && !isPaused())
-      marqueeAnims.forEach((a) => {
-        a.playbackRate += (v - a.playbackRate) * 0.1;
-      });
+    // Only touch the animations when the speed really changes: writing playbackRate every
+    // frame makes the browser re-sync them each time, which costs phones a lot while idle.
+    if (heroLive && !isPaused()) {
+      const next = Math.abs(v - mqRate) < 0.02 ? v : mqRate + (v - mqRate) * 0.1;
+      if (next !== mqRate) {
+        mqRate = next;
+        marqueeAnims.forEach((a) => (a.playbackRate = mqRate));
+      }
+    }
   });
 
   // Sphere: drag to spin, otherwise it brings the active skill's tools forward.

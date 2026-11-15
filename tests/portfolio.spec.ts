@@ -612,13 +612,8 @@ test("top bar: stays on screen, and the phone menu opens and closes", async ({
   });
   const page = await desk.newPage();
   await open(page);
-  await toSection(page, "toolkit");
-  await page.waitForTimeout(300);
-  const nav = page.getByRole("navigation", { name: "Main" });
-  await expect(nav.getByRole("link", { name: "Background" })).toBeInViewport();
-  await expect(page.locator("#pause")).toBeInViewport();
-  // Pause is reachable without tabbing through the whole page.
-  await page.locator("h1").evaluate(() => scrollTo(0, 0));
+  // Pause is reachable without tabbing through the whole page. Checked on arrival, before
+  // scrolling: scrollIntoView() moves Chromium's Tab starting point to the section it scrolls to.
   let tabs = 0;
   for (; tabs < 15; tabs++) {
     await page.keyboard.press("Tab");
@@ -626,6 +621,11 @@ test("top bar: stays on screen, and the phone menu opens and closes", async ({
       break;
   }
   expect(tabs).toBeLessThan(15);
+  await toSection(page, "toolkit");
+  await page.waitForTimeout(300);
+  const nav = page.getByRole("navigation", { name: "Main" });
+  await expect(nav.getByRole("link", { name: "Background" })).toBeInViewport();
+  await expect(page.locator("#pause")).toBeInViewport();
   await desk.close();
 
   const ctx = await browser.newContext({
